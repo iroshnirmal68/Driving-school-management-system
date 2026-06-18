@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DriveSafe Pro - Enterprise Fleet & Scheduling Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary: #0f172a;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --sidebar-bg: #1e293b;
+            --sidebar-text: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --theme-btn-bg: #e2e8f0;
+            --theme-btn-text: #334155;
+            
+            /* Landing Specific Page Variables */
+            --hero-bg: #0f172a;
+            --hero-text: #ffffff;
+            --landing-card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+        }
+
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --sidebar-bg: #0b1120;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --theme-btn-bg: #334155;
+            --theme-btn-text: #f59e0b;
+            --landing-card-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- PREMIUM PORTAL LANDING PAGE WRAPPER --- */
+        .portal-landing-container {
+            display: block;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Navigation Bar */
+        .landing-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 8%;
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo i {
+            color: var(--primary);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-meta-badge {
+            font-size: 11px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 99px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            font-weight: 600;
+        }
+
+        /* Hero Split Screen Structure */
+        .landing-hero {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            min-height: calc(100vh - 81px);
+            background: #0f172a;
+            position: relative;
+            overflow: hidden;
+            padding: 0 8%;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Animated Mesh Background Splines */
+        .landing-hero::before, .landing-hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.25;
+            z-index: 1;
+            animation: floatGlow 14s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .landing-hero::before {
+            width: 500px;
+            height: 500px;
+            background: #3b82f6;
+            top: -100px;
+            right: -50px;
+        }
+        .landing-hero::after {
+            width: 400px;
+            height: 400px;
+            background: #8b5cf6;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -7s;
+        }
+
+        .hero-left-content {
+            position: relative;
+            z-index: 10;
+            color: #ffffff;
+            animation: slideRightFade 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+
+        .hero-tagline i { color: #f59e0b; }
+
+        .hero-left-content h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-left-content h1 span {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-left-content p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            max-width: 540px;
+        }
+
+        .feature-bullets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .bullet {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .bullet i {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        /* Right Content: Login Module Wrapper */
+        .hero-right-portal {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideUpFade 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .login {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-header .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 16px;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+            transform: rotate(-5deg);
+        }
+
+        .login h2 {
+            font-size: 1.6rem;
+            color: #f8fafc;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .login p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 15px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: #f8fafc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-control::placeholder { color: #64748b; }
+
+        .input-control:focus {
+            border-color: #8b5cf6;
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        }
+
+        .input-control.is-invalid {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .role-selector {
+            padding-left: 48px !important;
+            appearance: none;
+            cursor: pointer;
+            color: #f8fafc;
+        }
+        
+        .role-selector option {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .login-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Marketing Core Features Grid Section */
+        .landing-features-section {
+            padding: 80px 8%;
+            background: var(--bg-color);
+        }
+
+        .section-headline {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .section-headline h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .section-headline p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .features-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: var(--landing-card-shadow);
+        }
+
+        .feature-card .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: rgba(59, 130, 246, 0.08);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
+        }
+        @keyframes slideRightFade {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- DASHBOARD VIEW SYSTEM LAYOUT --- */
+        .dashboard { display: none; min-height: 100vh; }
+        .dashboard-body { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--sidebar-bg); color: var(--sidebar-text); padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; position: relative; overflow-x: hidden; }
+        .sidebar.collapsed { width: 80px; }
+        .sidebar.collapsed h2, .sidebar.collapsed a span { display: none; }
+        .sidebar.collapsed a { justify-content: center; padding: 12px; }
+        #sidebarToggle { background: rgba(255, 255, 255, 0.1); border: none; color: white; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; width: 100%; }
+        .sidebar h2 { text-align: center; margin-bottom: 24px; font-size: 1.5rem; white-space: nowrap; }
+        .sidebar a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: var(--sidebar-text); text-decoration: none; cursor: pointer; opacity: 0.8; font-weight: 500; white-space: nowrap; }
+        .sidebar a:hover, .sidebar a.active { background: var(--primary); opacity: 1; }
+        .main { flex: 1; padding: 40px; max-width: 100%; overflow-x: hidden; background-color: var(--bg-color); }
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Dashboard Internal Component Architectures */
+        .section-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .card { background: var(--card-bg); padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); }
+        .card i { font-size: 28px; color: var(--primary); margin-bottom: 12px; }
+        .card h3 { color: var(--text-muted); font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        .card h1 { color: var(--text-main); font-size: 28px; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border); justify-content: space-between; align-items: center; }
+        .toolbar-controls { display: flex; gap: 12px; flex-wrap: wrap; }
+        .search-input { padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-color); color: var(--text-main); outline: none; min-width: 240px; }
+        .table-container { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        th { background: rgba(0,0,0,0.02); padding: 16px; color: var(--text-muted); font-weight: 600; font-size: 13px; border-bottom: 2px solid var(--border); }
+        td { padding: 16px; border-bottom: 1px solid var(--border); color: var(--text-main); font-size: 14px; }
+        
+        .btn { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 14px; }
+        .btn:hover { filter: brightness(1.1); }
+        .btn-danger { background: var(--danger); }
+        .btn-secondary { background: var(--text-muted); }
+        .action-btns { display: flex; gap: 8px; }
+        .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px; }
+        .action-btn.edit { color: var(--primary); }
+        .action-btn.delete { color: var(--danger); }
+        
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .badge-primary { background: rgba(59, 130, 246, 0.1); color: var(--primary); }
+
+        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--success); color: white; padding: 16px 24px; border-radius: 8px; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 9999; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: var(--danger); }
+
+        .btn-theme {
+            background-color: var(--theme-btn-bg);
+            color: var(--theme-btn-text);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .btn-theme:hover { transform: scale(1.03) translateY(-1px); }
+        .btn-theme.clicked i { transform: rotate(360deg); }
+        .btn-theme i { transition: transform 0.5s ease; }
+
+        /* Modals Structure */
+        .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal { background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 500px; border: 1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 18px; font-weight: 700; color: var(--text-main); }
+        .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; }
+        .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; max-height: 70vh; overflow-y: auto; }
+        .modal-footer { padding: 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .form-control { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-color); color: var(--text-main); outline: none; font-size: 14px; }
+
+        .analytics-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        
+        @media (max-width: 992px) {
+            .landing-hero { grid-template-columns: 1fr; padding: 40px 5%; text-align: center; gap: 40px; }
+            .hero-left-content h1 { font-size: 2.4rem; }
+            .hero-left-content p { margin: 0 auto 30px; }
+            .feature-bullets { justify-content: center; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; position: fixed; bottom: 0; left: 0; height: 60px; z-index: 999; padding: 0 10px; }
+            #sidebarToggle, .sidebar h2 { display: none; }
+            .sidebar a { padding: 8px 12px; font-size: 12px; }
+            .sidebar a:last-child { margin-top: 0 !important; }
+            .main { padding: 20px 20px 80px 20px; }
+            .analytics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="toast" class="toast">Message goes here</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modalTitle">Add Item</h3>
+            <button class="modal-close" onclick="closeModal()" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn" id="modalSubmitBtn" onclick="handleModalSubmit()">Save changes</button>
+        </div>
+    </div>
+</div>
+
+<div class="portal-landing-container" id="loginWrapper">
+    <nav class="landing-nav">
+        <div class="nav-logo">
+            <i class="fas fa-car-side"></i> DriveSafe Pro <span class="nav-meta-badge">v2.2 Stable</span>
+        </div>
+    </nav>
+
+    <div class="landing-hero">
+        <div class="hero-left-content">
+            <div class="hero-tagline">
+                <i class="fas fa-shield-halved"></i> Next-Gen Enterprise Fleet Management
+            </div>
+            <h1>Smart Driving Systems <span>Accelerated Realtime Analytics</span></h1>
+            <p>Empower your institutional driving logistics framework. Coordinate optimized fleet deployments, synchronize structured student timetables, and monitor financial pipelines within an integrated management ecosystem.</p>
+            
+            <div class="feature-bullets">
+                <div class="bullet"><i class="fas fa-check"></i> Role Based Access Security</div>
+                <div class="bullet"><i class="fas fa-check"></i> Real-time Fleet Tracking</div>
+                <div class="bullet"><i class="fas fa-check"></i> Integrated Dynamic Billing</div>
+                <div class="bullet"><i class="fas fa-check"></i> Precision Analytics Engine</div>
+            </div>
+        </div>
+
+        <div class="hero-right-portal">
+            <div class="login">
+                <div class="login-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h2>DriveSafe Pro</h2>
+                    <p>Secure access for driving professionals</p>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" id="username" class="input-control" placeholder="Username" value="admin">
+                    <i class="fas fa-user"></i>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" class="input-control" placeholder="Password" value="password">
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <div class="input-group">
+                    <select id="role" class="input-control role-selector">
+                        <option value="admin">Administrator</option>
+                        <option value="instructor">Instructor</option>
+                        <option value="student">Student</option>
+                    </select>
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                
+                <button class="btn-login" onclick="login()">
+                    <span>Sign In to Terminal</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="login-footer">
+                    Authorized System Terminals Only
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="landing-features-section">
+        <div class="section-headline">
+            <h2>Core Infrastructure Subsystems</h2>
+            <p>Designed to manage high-throughput operations across institutional scheduling and vehicle routing models safely.</p>
+        </div>
+        <div class="features-showcase-grid">
+            <div class="feature-card">
+                <div class="icon-wrapper"><i class="fas fa-user-graduate"></i></div>
+                <h3>Unified Student Records</h3>
+                <p>Track student operational progress metrics, assign educational course frameworks, and review billing profiles effortlessly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrapper"><i class="fas fa-calendar-alt"></i></div>
+                <h3>Dynamic Scheduling</h3>
+                <p>Avoid conflicts across instructional time windows with zero duplication via programmatic linear timestamp sequence loops.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrapper"><i class="fas fa-car"></i></div>
+                <h3>Fleet Lifecycle Metrics</h3>
+                <p>Monitor transmission deployments, flag real-time maintenance updates, and run diagnostic intervals metrics safely.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="dashboard" id="system">
+    <div class="dashboard-body">
+        
+        <aside class="sidebar" id="sidebar">
+            <button id="sidebarToggle" onclick="toggleSidebar()" title="Toggle Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2>🚗 DriveSafe</h2>
+            <a class="active" onclick="showSection('dashboard', this)" title="Dashboard"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
+            <a onclick="showSection('students', this)" id="menuStudents" title="Students"><i class="fas fa-user-graduate"></i> <span>Students</span></a>
+            <a onclick="showSection('instructors', this)" id="menuInstructors" title="Instructors"><i class="fas fa-chalkboard-teacher"></i> <span>Instructors</span></a>
+            <a onclick="showSection('vehicles', this)" id="menuVehicles" title="Vehicles"><i class="fas fa-car"></i> <span>Vehicles</span></a>
+            <a onclick="showSection('lessons', this)" title="Lessons"><i class="fas fa-calendar-alt"></i> <span>Lessons</span></a>
+            <a onclick="showSection('payments', this)" id="menuPayments" title="Payments"><i class="fas fa-wallet"></i> <span>Payments</span></a>
+            <a onclick="showSection('analytics', this)" id="menuAnalytics" title="Analytics"><i class="fas fa-chart-line"></i> <span>Analytics</span></a>
+            <a onclick="showSection('databaseSection', this)" id="menuDatabase" title="Database Utilities"><i class="fas fa-database"></i> <span>Database</span></a>
+            <a onclick="logout()" style="margin-top: auto; background: rgba(255,255,255,0.1);" title="Logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </aside>
+
+        <main class="main">
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h1>Overview</h1>
+                    <button id="themeToggleBtn" class="btn-theme" onclick="toggleDarkMode()" title="Toggle Theme">
+                        <i id="themeIcon" class="fas fa-moon"></i> 
+                        <span id="themeText">Dark Mode</span>
+                    </button>
+                </div>
+                <div class="cards">
+                    <div class="card"><i class="fas fa-users"></i><h3>Total Students</h3><h1 id="dStudents">0</h1></div>
+                    <div class="card"><i class="fas fa-id-card"></i><h3>Instructors</h3><h1 id="dInstructors">0</h1></div>
+                    <div class="card"><i class="fas fa-car-side"></i><h3>Fleet Size</h3><h1 id="dVehicles">0</h1></div>
+                    <div class="card"><i class="fas fa-book"></i><h3>Active Lessons</h3><h1 id="dLessons">0</h1></div>
+                    <div class="card" id="revenueCard"><i class="fas fa-money-bill-wave"></i><h3>Total Revenue</h3><h1 id="dRevenue">LKR 0</h1></div>
+                </div>
+            </section>
+
+            <section id="students" class="section">
+                <div class="section-header">
+                    <h1>Students Management</h1>
+                </div>
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="searchStudents" placeholder="Search students..." oninput="renderStudentsTable()">
+                    <div class="toolbar-controls">
+                        <button class="btn" onclick="openCreateModal('students')"><i class="fas fa-plus"></i> Add Student</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Package</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="studentsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="instructors" class="section">
+                <div class="section-header">
+                    <h1>Instructors Directory</h1>
+                </div>
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="searchInstructors" placeholder="Search instructors..." oninput="renderInstructorsTable()">
+                    <div class="toolbar-controls">
+                        <button class="btn" onclick="openCreateModal('instructors')"><i class="fas fa-plus"></i> Add Instructor</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Name</th><th>License Number</th><th>Phone</th><th>Specialization</th><th>Availability</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="instructorsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="vehicles" class="section">
+                <div class="section-header">
+                    <h1>Fleet Management</h1>
+                </div>
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="searchVehicles" placeholder="Search vehicles..." oninput="renderVehiclesTable()">
+                    <div class="toolbar-controls">
+                        <button class="btn" onclick="openCreateModal('vehicles')"><i class="fas fa-plus"></i> Add Vehicle</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Model</th><th>Plate Number</th><th>Transmission</th><th>Status</th><th>Last Service</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="vehiclesTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="lessons" class="section">
+                <div class="section-header">
+                    <h1>Lesson Schedules</h1>
+                </div>
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="searchLessons" placeholder="Search lessons..." oninput="renderLessonsTable()">
+                    <div class="toolbar-controls">
+                        <button class="btn" onclick="openCreateModal('lessons')"><i class="fas fa-calendar-plus"></i> Book Lesson</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Student</th><th>Instructor</th><th>Vehicle</th><th>Date & Time</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="lessonsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="payments" class="section">
+                <div class="section-header">
+                    <h1>Billing & Invoice Logs</h1>
+                </div>
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="searchPayments" placeholder="Search transactions..." oninput="renderPaymentsTable()">
+                    <div class="toolbar-controls">
+                        <button class="btn" onclick="openCreateModal('payments')"><i class="fas fa-hand-holding-usd"></i> Record Payment</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Invoice ID</th><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="paymentsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="analytics" class="section">
+                <div class="section-header">
+                    <h1>Performance Metrics</h1>
+                </div>
+                <div class="analytics-grid">
+                    <div class="card">
+                        <h3>Recent Financial Progress</h3>
+                        <div style="height: 200px; display: flex; align-items: flex-end; gap: 20px; padding-top: 20px; border-bottom: 2px solid var(--border);">
+                            <div style="flex: 1; background: var(--primary); height: 40%; border-radius: 4px 4px 0 0; text-align: center; color: white; font-size: 11px; padding-top: 4px;">Mar</div>
+                            <div style="flex: 1; background: var(--primary); height: 65%; border-radius: 4px 4px 0 0; text-align: center; color: white; font-size: 11px; padding-top: 4px;">Apr</div>
+                            <div style="flex: 1; background: linear-gradient(to top, var(--primary), #6366f1); height: 90%; border-radius: 4px 4px 0 0; text-align: center; color: white; font-size: 11px; padding-top: 4px;">May (Current)</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Lesson Distribution</h3>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+                            <li style="display: flex; justify-content: space-between;"><span>Manual Transmission</span><strong id="analyticsManual">0</strong></li>
+                            <li style="display: flex; justify-content: space-between;"><span>Automatic Transmission</span><strong id="analyticsAuto">0</strong></li>
+                            <li style="display: flex; justify-content: space-between;"><span>Completed Rates</span><span class="badge badge-success">94%</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="databaseSection" class="section">
+                <div class="section-header">
+                    <h1>System Utilities & Seeds</h1>
+                </div>
+                <div class="card">
+                    <h3>Database Operations</h3>
+                    <p style="margin: 10px 0 20px 0;">Populate simulated application states, clear standard data environments, or run a systemic full clear state routine.</p>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button class="btn" onclick="seedMockData()"><i class="fas fa-seedling"></i> Seed Demo Data</button>
+                        <button class="btn btn-danger" onclick="clearDatabase()"><i class="fas fa-trash-alt"></i> Wipe Database</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script>
+// Local Storage Framework Memory Setup
+let db = JSON.parse(localStorage.getItem('drivingSchoolDB')) || { students: [], instructors: [], vehicles: [], lessons: [], payments: [] };
+let activeModalTarget = ''; 
+let activeEditId = null;
+let currentRole = "";
+
+// Validation Utility Functions
+const validators = {
+    email: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+    phone: (val) => /^(?:\+94|0)[7-9]\d{8}$/.test(val.replace(/[\s-]/g, '')), // Sri Lankan format check
+    plate: (val) => /^[A-Z]{2,3}\s[A-Z]{2,3}-\d{4}$/i.test(val.trim()), // Format layout: WP CAD-2291
+    license: (val) => /^L-DMV-\d{5}$/i.test(val.trim()), // Internal license protocol schema
+    text: (val, min = 2) => val.trim().length >= min
+};
+
+// Clear Validation Error Styling Blocks
+function clearFormErrors() {
+    document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+}
+
+// Render Field Errors Inline Dynamically
+function setFieldError(fieldId, msg) {
+    const el = document.getElementById(fieldId);
+    if(el) {
+        el.classList.add('is-invalid');
+        let errorSpan = el.parentNode.querySelector('.error-message');
+        if(!errorSpan) {
+            errorSpan = document.createElement('span');
+            errorSpan.className = 'error-message';
+            el.parentNode.appendChild(errorSpan);
+        }
+        errorSpan.innerText = msg;
+        errorSpan.style.display = 'block';
+    }
+}
+
+// Theme Engine Synchronization
+const savedDarkMode = localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+if(savedDarkMode) {
+    document.body.classList.add('dark-mode');
+    updateThemeButtonUI(true);
+}
+
+// Security Validation Engine Authentication
+function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    currentRole = document.getElementById('role').value;
+    
+    if (!username || !password) return showToast('Please enter credentials.', true);
+    if (username !== 'admin' || password !== 'password') return showToast('Invalid credentials.', true);
+
+    // Hide Entire Landing/Login Structure and mount backoffice view
+    document.getElementById('loginWrapper').style.display = 'none';
+    document.getElementById('system').style.display = 'block';
+
+    // Role-Based Access Routing Constraints
+    const restrictedToAdmin = ['menuPayments', 'menuDatabase', 'menuAnalytics', 'revenueCard'];
+    const restrictedToInstructor = ['menuStudents', 'menuInstructors', 'menuVehicles'];
+    
+    if(currentRole === 'student' || currentRole === 'instructor') {
+        restrictedToAdmin.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
+    }
+    if(currentRole === 'student') {
+        restrictedToInstructor.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
+    }
+    
+    showToast(`Welcome back, ${username}!`);
+    updateUI();
+}
+
+function showToast(message, isError = false) {
+    const toast = document.getElementById('toast');
+    toast.innerText = message;
+    toast.className = `toast show ${isError ? 'error' : ''}`;
+    setTimeout(() => toast.className = 'toast', 3000);
+}
+
+function toggleDarkMode() {
+    const isDarkMode = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    const btn = document.getElementById('themeToggleBtn');
+    btn.classList.remove('clicked');
+    void btn.offsetWidth; // Force execution engine reflow
+    btn.classList.add('clicked');
+    
+    setTimeout(() => { updateThemeButtonUI(isDarkMode); }, 150);
+}
+
+function updateThemeButtonUI(isDark) {
+    const icon = document.getElementById('themeIcon');
+    const text = document.getElementById('themeText');
+    if(!icon || !text) return;
+    if(isDark) {
+        icon.className = 'fas fa-sun';
+        text.innerText = 'Light Mode';
+    } else {
+        icon.className = 'fas fa-moon';
+        text.innerText = 'Dark Mode';
+    }
+}
+
+function logout() { location.reload(); }
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+
+function showSection(id, element) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    element.classList.add('active');
+}
+
+// State Persistence Utilities
+function saveState() {
+    localStorage.setItem('drivingSchoolDB', JSON.stringify(db));
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById('dStudents').innerText = db.students.length;
+    document.getElementById('dInstructors').innerText = db.instructors.length;
+    document.getElementById('dVehicles').innerText = db.vehicles.length;
+    document.getElementById('dLessons').innerText = db.lessons.length;
+    
+    const revenue = db.payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
+    document.getElementById('dRevenue').innerText = `LKR ${revenue.toLocaleString()}`;
+
+    const manualCount = db.vehicles.filter(v => v.transmission === 'Manual').length;
+    document.getElementById('analyticsManual').innerText = manualCount;
+    document.getElementById('analyticsAuto').innerText = db.vehicles.length - manualCount;
+
+    renderStudentsTable();
+    renderInstructorsTable();
+    renderVehiclesTable();
+    renderLessonsTable();
+    renderPaymentsTable();
+}
+
+/* Subsystem View Component Builders */
+function renderStudentsTable() {
+    const term = document.getElementById('searchStudents').value.toLowerCase();
+    const target = document.getElementById('studentsTableBody');
+    if(!target) return; target.innerHTML = '';
+    db.students.filter(s => s.name.toLowerCase().includes(term) || s.email.toLowerCase().includes(term)).forEach(s => {
+        target.innerHTML += `<tr>
+            <td>${s.id}</td>
+            <td><b>${s.name}</b></td>
+            <td>${s.email}</td>
+            <td>${s.phone}</td>
+            <td>${s.package}</td>
+            <td><span class="badge ${s.status === 'Active' ? 'badge-success' : 'badge-danger'}">${s.status}</span></td>
+            <td class="action-btns">
+                <button class="action-btn edit" onclick="openEditModal('students', ${s.id})" title="Edit Student"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete" onclick="deleteRecord('students', ${s.id})" title="Delete Student"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
+    });
+}
+
+function renderInstructorsTable() {
+    const term = document.getElementById('searchInstructors').value.toLowerCase();
+    const target = document.getElementById('instructorsTableBody');
+    if(!target) return; target.innerHTML = '';
+    db.instructors.filter(i => i.name.toLowerCase().includes(term) || i.specialization.toLowerCase().includes(term)).forEach(i => {
+        target.innerHTML += `<tr>
+            <td>${i.id}</td>
+            <td><b>${i.name}</b></td>
+            <td>${i.license}</td>
+            <td>${i.phone}</td>
+            <td>${i.specialization}</td>
+            <td><span class="badge ${i.availability === 'Available' ? 'badge-success' : 'badge-danger'}">${i.availability}</span></td>
+            <td class="action-btns">
+                <button class="action-btn edit" onclick="openEditModal('instructors', ${i.id})" title="Edit Instructor"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete" onclick="deleteRecord('instructors', ${i.id})" title="Delete Instructor"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
+    });
+}
+
+function renderVehiclesTable() {
+    const term = document.getElementById('searchVehicles').value.toLowerCase();
+    const target = document.getElementById('vehiclesTableBody');
+    if(!target) return; target.innerHTML = '';
+    db.vehicles.filter(v => v.model.toLowerCase().includes(term) || v.plate.toLowerCase().includes(term)).forEach(v => {
+        target.innerHTML += `<tr>
+            <td>${v.id}</td>
+            <td><b>${v.model}</b></td>
+            <td>${v.plate}</td>
+            <td>${v.transmission}</td>
+            <td><span class="badge ${v.status === 'Active' ? 'badge-success' : 'badge-danger'}">${v.status}</span></td>
+            <td>${v.serviceDate}</td>
+            <td class="action-btns">
+                <button class="action-btn edit" onclick="openEditModal('vehicles', ${v.id})" title="Edit Vehicle"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete" onclick="deleteRecord('vehicles', ${v.id})" title="Delete Vehicle"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
+    });
+}
+
+function renderLessonsTable() {
+    const term = document.getElementById('searchLessons').value.toLowerCase();
+    const target = document.getElementById('lessonsTableBody');
+    if(!target) return; target.innerHTML = '';
+    db.lessons.filter(l => l.student.toLowerCase().includes(term) || l.instructor.toLowerCase().includes(term)).forEach(l => {
+        target.innerHTML += `<tr>
+            <td>${l.id}</td>
+            <td><b>${l.student}</b></td>
+            <td>${l.instructor}</td>
+            <td>${l.vehicle}</td>
+            <td>${l.dateTime.replace('T', ' ')}</td>
+            <td><span class="badge badge-primary">${l.status}</span></td>
+            <td class="action-btns">
+                <button class="action-btn delete" onclick="deleteRecord('lessons', ${l.id})" title="Cancel Lesson"><i class="fas fa-times-circle"></i></button>
+            </td>
+        </tr>`;
+    });
+}
+
+function renderPaymentsTable() {
+    const term = document.getElementById('searchPayments').value.toLowerCase();
+    const target = document.getElementById('paymentsTableBody');
+    if(!target) return; target.innerHTML = '';
+    db.payments.filter(p => p.student.toLowerCase().includes(term)).forEach(p => {
+        target.innerHTML += `<tr>
+            <td>#INV-${p.id}</td>
+            <td><b>${p.student}</b></td>
+            <td>LKR ${parseFloat(p.amount).toLocaleString()}</td>
+            <td>${p.method}</td>
+            <td>${p.date}</td>
+            <td><span class="badge badge-success">Completed</span></td>
+        </tr>`;
+    });
+}
+
+/* Modal Engine Handlers */
+function openModal(title, bodyHtml) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalBody').innerHTML = bodyHtml;
+    document.getElementById('modalBackdrop').style.display = 'flex';
+    clearFormErrors();
+}
+
+function closeModal() {
+    document.getElementById('modalBackdrop').style.display = 'none';
+    activeModalTarget = '';
+    activeEditId = null;
+}
+
+function openCreateModal(type) {
+    activeModalTarget = type;
+    activeEditId = null;
+    let html = '';
+    
+    if(type === 'students') {
+        html = `
+            <div class="form-group"><label>Full Name</label><input type="text" id="formStudName" class="form-control" placeholder="e.g. Nimlesh Perera" required></div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="formStudEmail" class="form-control" placeholder="e.g. name@domain.com" required></div>
+            <div class="form-group"><label>Phone Number</label><input type="text" id="formStudPhone" class="form-control" placeholder="e.g. +94771234567" required></div>
+            <div class="form-group"><label>Package Selection</label>
+                <select id="formStudPkg" class="form-control">
+                    <option>Regular Manual Course</option><option>Premium Auto Course</option><option>VVIP FastTrack Package</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Status</label><select id="formStudStatus" class="form-control"><option>Active</option><option>Suspended</option></select></div>`;
+        openModal('Register New Student Account', html);
+    } else if(type === 'instructors') {
+        html = `
+            <div class="form-group"><label>Instructor Name</label><input type="text" id="formInstName" class="form-control" placeholder="e.g. Captain Ranjith Silva" required></div>
+            <div class="form-group"><label>DMV License Hash ID</label><input type="text" id="formInstLic" class="form-control" placeholder="e.g. L-DMV-90142" required></div>
+            <div class="form-group"><label>Contact Line</label><input type="text" id="formInstPhone" class="form-control" placeholder="e.g. +94752221111" required></div>
+            <div class="form-group"><label>Technical Specialty</label><select id="formInstSpec" class="form-control"><option>Heavy Vehicles</option><option>Light Motor Cars</option><option>Defensive Driving Pro</option></select></div>
+            <div class="form-group"><label>Availability</label><select id="formInstAvail" class="form-control"><option>Available</option><option>On Leave</option></select></div>`;
+        openModal('Add Certified Instructor Profile', html);
+    } else if(type === 'vehicles') {
+        html = `
+            <div class="form-group"><label>Vehicle Variant/Model</label><input type="text" id="formVehModel" class="form-control" placeholder="Toyota Vitz" required></div>
+            <div class="form-group"><label>Registration License Plate</label><input type="text" id="formVehPlate" class="form-control" placeholder="WP CAS-4912" required></div>
+            <div class="form-group"><label>Powertrain Transmission</label><select id="formVehTrans" class="form-control"><option>Manual</option><option>Automatic</option></select></div>
+            <div class="form-group"><label>System Deploy Status</label><select id="formVehStatus" class="form-control"><option>Active</option><option>Maintenance</option></select></div>
+            <div class="form-group"><label>Service Review Check Date</label><input type="date" id="formVehDate" class="form-control" required></div>`;
+        openModal('Commission New Fleet Unit', html);
+    } else if(type === 'lessons') {
+        let studentOpts = db.students.filter(s => s.status === 'Active').map(s => `<option>${s.name}</option>`).join('');
+        let instOpts = db.instructors.filter(i => i.availability === 'Available').map(i => `<option>${i.name}</option>`).join('');
+        let vehOpts = db.vehicles.filter(v => v.status === 'Active').map(v => `<option>${v.model} [${v.plate}]</option>`).join('');
+        
+        if(!studentOpts || !instOpts || !vehOpts) {
+            html = `<p style="color:var(--danger); text-align:center; padding: 20px;">Cannot allocate lesson slots. Ensure active student profiles, available instructors, and active fleet units exist inside data stores.</p>`;
+            openModal('Backoffice Exception Block', html);
+            document.getElementById('modalSubmitBtn').style.display = 'none';
+            return;
+        }
+        document.getElementById('modalSubmitBtn').style.display = 'inline-flex';
+        html = `
+            <div class="form-group"><label>Select Student</label><select id="formLesStud" class="form-control">${studentOpts}</select></div>
+            <div class="form-group"><label>Assign Staff Instructor</label><select id="formLesInst" class="form-control">${instOpts}</select></div>
+            <div class="form-group"><label>Assign Safe Training Vehicle</label><select id="formLesVeh" class="form-control">${vehOpts}</select></div>
+            <div class="form-group"><label>Scheduling Date and Time Sequence</label><input type="datetime-local" id="formLesTime" class="form-control" required></div>`;
+        openModal('Book Allocation Lesson Slot', html);
+    } else if(type === 'payments') {
+        let studentOpts = db.students.map(s => `<option>${s.name}</option>`).join('');
+        if(!studentOpts) {
+            html = `<p style="color:var(--danger); text-align:center; padding: 20px;">No registered student instances located to receive ledger routing items.</p>`;
+            openModal('Backoffice Exception Block', html);
+            document.getElementById('modalSubmitBtn').style.display = 'none';
+            return;
+        }
+        document.getElementById('modalSubmitBtn').style.display = 'inline-flex';
+        html = `
+            <div class="form-group"><label>Source Student Record Address</label><select id="formPayStud" class="form-control">${studentOpts}</select></div>
+            <div class="form-group"><label>Payment Sum (LKR)</label><input type="number" id="formPayAmt" class="form-control" placeholder="15000" min="1" required></div>
+            <div class="form-group"><label>Transaction Method Mode</label><select id="formPayMethod" class="form-control"><option>Cash Transfer</option><option>Bank Transfer/Gateway</option><option>POS Terminals Card</option></select></div>`;
+        openModal('Process Dynamic Financial Ledger Invoice Transaction Entry', html);
+    }
+}
+
+function openEditModal(type, id) {
+    activeModalTarget = type;
+    activeEditId = id;
+    const item = db[type].find(x => x.id === id);
+    if(!item) return;
+
+    if(type === 'students') {
+        openCreateModal('students');
+        document.getElementById('modalTitle').innerText = 'Modify Student Data Structure';
+        document.getElementById('formStudName').value = item.name;
+        document.getElementById('formStudEmail').value = item.email;
+        document.getElementById('formStudPhone').value = item.phone;
+        document.getElementById('formStudPkg').value = item.package;
+        document.getElementById('formStudStatus').value = item.status;
+    } else if(type === 'instructors') {
+        openCreateModal('instructors');
+        document.getElementById('modalTitle').innerText = 'Update Instructor Profile Matrix';
+        document.getElementById('formInstName').value = item.name;
+        document.getElementById('formInstLic').value = item.license;
+        document.getElementById('formInstPhone').value = item.phone;
+        document.getElementById('formInstSpec').value = item.specialization;
+        document.getElementById('formInstAvail').value = item.availability;
+    } else if(type === 'vehicles') {
+        openCreateModal('vehicles');
+        document.getElementById('modalTitle').innerText = 'Edit Fleet Unit Structural Definition';
+        document.getElementById('formVehModel').value = item.model;
+        document.getElementById('formVehPlate').value = item.plate;
+        document.getElementById('formVehTrans').value = item.transmission;
+        document.getElementById('formVehStatus').value = item.status;
+        document.getElementById('formVehDate').value = item.serviceDate;
+    }
+}
+
+function handleModalSubmit() {
+    clearFormErrors();
+    const t = activeModalTarget;
+    let hasErrors = false;
+    
+    if(t === 'students') {
+        const name = document.getElementById('formStudName').value.trim();
+        const email = document.getElementById('formStudEmail').value.trim();
+        const phone = document.getElementById('formStudPhone').value.trim();
+        
+        if(!validators.text(name, 3)) { setFieldError('formStudName', 'Name must contain at least 3 characters.'); hasErrors = true; }
+        if(!validators.email(email)) { setFieldError('formStudEmail', 'Please enter a valid email address sequence.'); hasErrors = true; }
+        if(!validators.phone(phone)) { setFieldError('formStudPhone', 'Invalid line parameters. Format: +947XXXXXXXX or 07XXXXXXXX.'); hasErrors = true; }
+        
+        if(hasErrors) return showToast('Form structure contains validation errors.', true);
+        
+        if(activeEditId) {
+            let index = db.students.findIndex(s => s.id === activeEditId);
+            db.students[index] = { id: activeEditId, name, email, phone, package: document.getElementById('formStudPkg').value, status: document.getElementById('formStudStatus').value };
+        } else {
+            db.students.push({ id: Date.now(), name, email, phone, package: document.getElementById('formStudPkg').value, status: document.getElementById('formStudStatus').value });
+        }
+    } else if(t === 'instructors') {
+        const name = document.getElementById('formInstName').value.trim();
+        const license = document.getElementById('formInstLic').value.trim();
+        const phone = document.getElementById('formInstPhone').value.trim();
+        
+        if(!validators.text(name, 3)) { setFieldError('formInstName', 'Instructor name must contain at least 3 characters.'); hasErrors = true; }
+        if(!validators.license(license)) { setFieldError('formInstLic', 'Invalid structure specification format rules. Example: L-DMV-12345'); hasErrors = true; }
+        if(!validators.phone(phone)) { setFieldError('formInstPhone', 'Invalid structural telephone line layout rules.'); hasErrors = true; }
+        
+        if(hasErrors) return showToast('Mandatory criteria assertions failed.', true);
+        
+        if(activeEditId) {
+            let index = db.instructors.findIndex(i => i.id === activeEditId);
+            db.instructors[index] = { id: activeEditId, name, license, phone, specialization: document.getElementById('formInstSpec').value, availability: document.getElementById('formInstAvail').value };
+        } else {
+            db.instructors.push({ id: Date.now(), name, license, phone, specialization: document.getElementById('formInstSpec').value, availability: document.getElementById('formInstAvail').value });
+        }
+    } else if(t === 'vehicles') {
+        const model = document.getElementById('formVehModel').value.trim();
+        const plate = document.getElementById('formVehPlate').value.trim();
+        const serviceDate = document.getElementById('formVehDate').value;
+        
+        if(!validators.text(model, 2)) { setFieldError('formVehModel', 'Please clarify variant/model identification attributes.'); hasErrors = true; }
+        if(!validators.plate(plate)) { setFieldError('formVehPlate', 'Invalid automotive plate pattern logic framework. Layout: WP CAD-2291'); hasErrors = true; }
+        if(!serviceDate) { setFieldError('formVehDate', 'Service baseline timestamps cannot remain empty.'); hasErrors = true; }
+        
+        if(hasErrors) return showToast('Required criteria bounds metrics broken.', true);
+
+        if(activeEditId) {
+            let index = db.vehicles.findIndex(v => v.id === activeEditId);
+            db.vehicles[index] = { id: activeEditId, model, plate, transmission: document.getElementById('formVehTrans').value, status: document.getElementById('formVehStatus').value, serviceDate };
+        } else {
+            db.vehicles.push({ id: Date.now(), model, plate, transmission: document.getElementById('formVehTrans').value, status: document.getElementById('formVehStatus').value, serviceDate });
+        }
+    } else if(t === 'lessons') {
+        const timeVal = document.getElementById('formLesTime').value;
+        const student = document.getElementById('formLesStud').value;
+        const instructor = document.getElementById('formLesInst').value;
+        const vehicle = document.getElementById('formLesVeh').value;
+
+        if(!timeVal) { setFieldError('formLesTime', 'Select a functional timestamp sequence target.'); return showToast('Validation errors detected.', true); }
+        
+        // Chronological Guardrails: Prevent scheduling inside historic timestamp phases
+        if(new Date(timeVal) < new Date()) {
+            setFieldError('formLesTime', 'Lessons cannot be retroactively booked inside previous calendar dates.');
+            return showToast('Chronological runtime assertion failure.', true);
+        }
+
+        // Deep Algorithmic Scan Engine: Prevent scheduling conflicts/double-booking anomalies
+        const conflict = db.lessons.find(l => l.dateTime === timeVal && (l.student === student || l.instructor === instructor || l.vehicle === vehicle));
+        if(conflict) {
+            setFieldError('formLesTime', 'Resource collision mapped! Student, Instructor, or Fleet Unit matches an existing schedule.');
+            return showToast('Double-booking exception intercepted.', true);
+        }
+
+        db.lessons.push({
+            id: Date.now(),
+            student,
+            instructor,
+            vehicle,
+            dateTime: timeVal,
+            status: 'Scheduled'
+        });
+    } else if(t === 'payments') {
+        const amt = parseFloat(document.getElementById('formPayAmt').value);
+        if(isNaN(amt) || amt <= 0) {
+            setFieldError('formPayAmt', 'Financial transactions require positive numeric parameters.');
+            return showToast('Ledger constraint violations handled.', true);
+        }
+        db.payments.push({
+            id: Math.floor(Math.random() * 900000) + 100000,
+            student: document.getElementById('formPayStud').value,
+            amount: amt,
+            method: document.getElementById('formPayMethod').value,
+            date: new Date().toISOString().split('T')[0]
+        });
+    }
+
+    saveState();
+    closeModal();
+    showToast('Configuration sequence successfully finalized.');
+}
+
+function deleteRecord(table, id) {
+    if(confirm('Are you sure you want to delete this record?')) {
+        db[table] = db[table].filter(x => x.id !== id);
+        saveState();
+        showToast('Entity structural map dropped safely.');
+    }
+}
+
+/* Seed Logic lifecycle hooks */
+function seedMockData() {
+    db.students = [
+        { id: 101, name: "Nimlesh Perera", email: "nimlesh@example.com", phone: "+94771234567", package: "Premium Auto Course", status: "Active" },
+        { id: 102, name: "Fathima Rizna", email: "rizna@example.com", phone: "+94719876543", package: "Regular Manual Course", status: "Active" }
+    ];
+    db.instructors = [
+        { id: 201, name: "Captain Ranjith Silva", license: "L-DMV-90142", phone: "+94752221111", specialization: "Defensive Driving Pro", availability: "Available" },
+        { id: 202, name: "Mahinda Alwis", license: "L-DMV-33152", phone: "+94724449999", specialization: "Light Motor Cars", availability: "Available" }
+    ];
+    db.vehicles = [
+        { id: 301, name: "Toyota Vitz Pro", model: "Toyota Vitz", plate: "WP CAD-2291", transmission: "Automatic", status: "Active", serviceDate: "2026-04-12" },
+        { id: 302, name: "Suzuki Alto Custom", model: "Suzuki Alto", plate: "WP CAA-8831", transmission: "Manual", status: "Active", serviceDate: "2026-05-01" }
+    ];
+    db.lessons = [
+        { id: 401, student: "Nimlesh Perera", instructor: "Captain Ranjith Silva", vehicle: "Toyota Vitz [WP CAD-2291]", dateTime: "2026-06-20T10:30", status: "Scheduled" }
+    ];
+    db.payments = [
+        { id: 88123, student: "Nimlesh Perera", amount: 45000, method: "Bank Transfer/Gateway", date: "2026-05-10" },
+        { id: 88124, student: "Fathima Rizna", amount: 38000, method: "Cash Transfer", date: "2026-05-14" }
+    ];
+    saveState();
+    showToast('Mock data seeded successfully.');
+}
+
+function clearDatabase() {
+    if(confirm('Are you sure you want to wipe the data storage memory space?')) {
+        db = { students: [], instructors: [], vehicles: [], lessons: [], payments: [] };
+        saveState();
+        showToast('Database wiped fully.', true);
+    }
+}
+
+window.onload = function() {
+    updateUI();
+};
+</script>
+</body>
+</html>
