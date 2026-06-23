@@ -295,6 +295,20 @@
             z-index: 2;
         }
 
+        .toggle-eye {
+            left: auto !important;
+            right: 16px !important;
+            cursor: pointer !important;
+            pointer-events: all !important;
+            color: #64748b !important;
+            transition: color 0.2s ease !important;
+            font-size: 15px !important;
+        }
+
+        .toggle-eye:hover {
+            color: #8b5cf6 !important;
+        }
+
         .input-control {
             width: 100%;
             padding: 14px 16px 14px 48px;
@@ -600,9 +614,10 @@
                     <i class="fas fa-user"></i>
                 </div>
                 
-                <div class="input-group">
-                    <input type="password" id="password" class="input-control" placeholder="Password" value="password">
+                <div class="input-group" style="position:relative;">
+                    <input type="password" id="password" class="input-control" placeholder="Password" value="password" style="padding-right:46px;">
                     <i class="fas fa-lock"></i>
+                    <i class="fas fa-eye toggle-eye" onclick="togglePasswordVisibility('password', this)" title="Show/Hide Password"></i>
                 </div>
                 
                 <div class="input-group">
@@ -619,12 +634,114 @@
                     <i class="fas fa-arrow-right"></i>
                 </button>
 
+                <div class="forgot-link-wrap" style="text-align:center; margin-top:14px;">
+                    <a href="#" onclick="showForgotPanel(); return false;" style="color:#60a5fa; font-size:13px; text-decoration:none; font-weight:500;">
+                        <i class="fas fa-key" style="margin-right:5px;"></i>Forgot your password?
+                    </a>
+                </div>
+
                 <div class="login-footer">
                     Authorized System Terminals Only
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ====== FORGOT PASSWORD OVERLAY ====== -->
+    <div id="fpOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:3000; display:none; justify-content:center; align-items:center; backdrop-filter:blur(6px);">
+
+        <!-- Step 1 : Request OTP -->
+        <div id="fpStep1" class="login" style="max-width:420px; animation:slideUpFade 0.5s cubic-bezier(0.16,1,0.3,1);">
+            <div class="login-header">
+                <div class="logo-icon" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h2 style="color:#f8fafc;">Forgot Password</h2>
+                <p>Enter your registered email address or mobile number to receive a one-time password (OTP).</p>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="fpContact" class="input-control" placeholder="Email address or mobile number">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div id="fpContactError" class="error-message" style="color:#ef4444; font-size:12px; margin-top:-12px; margin-bottom:10px; display:none;"></div>
+
+            <button class="btn-login" onclick="fpRequestOTP()" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">
+                <span>Send OTP</span><i class="fas fa-paper-plane"></i>
+            </button>
+            <div style="text-align:center; margin-top:14px;">
+                <a href="#" onclick="hideForgotPanel(); return false;" style="color:#94a3b8; font-size:13px; text-decoration:none;">
+                    <i class="fas fa-arrow-left" style="margin-right:5px;"></i>Back to Login
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 2 : Enter OTP -->
+        <div id="fpStep2" class="login" style="max-width:420px; display:none; animation:slideUpFade 0.5s cubic-bezier(0.16,1,0.3,1);">
+            <div class="login-header">
+                <div class="logo-icon" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <h2 style="color:#f8fafc;">Verify OTP</h2>
+                <p id="fpOtpHint">A 6-digit OTP has been sent to your contact. Enter it below.</p>
+            </div>
+
+            <div style="display:flex; gap:8px; justify-content:center; margin-bottom:18px;" id="otpBoxes">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,0)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,1)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,2)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,3)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,4)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,5)">
+            </div>
+            <div id="fpOtpError" class="error-message" style="color:#ef4444; font-size:12px; margin-bottom:10px; display:none; text-align:center;"></div>
+
+            <div style="text-align:center; color:#94a3b8; font-size:13px; margin-bottom:16px;">
+                <span id="otpTimer">OTP expires in <b id="otpCountdown">02:00</b></span>
+            </div>
+
+            <button class="btn-login" onclick="fpVerifyOTP()" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);">
+                <span>Verify OTP</span><i class="fas fa-check-circle"></i>
+            </button>
+            <div style="text-align:center; margin-top:14px; display:flex; justify-content:center; gap:20px;">
+                <a href="#" onclick="fpGoBack(1); return false;" style="color:#94a3b8; font-size:13px; text-decoration:none;">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <a href="#" onclick="fpResendOTP(); return false;" style="color:#60a5fa; font-size:13px; text-decoration:none;" id="resendLink">
+                    <i class="fas fa-redo"></i> Resend OTP
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 3 : Reset Password -->
+        <div id="fpStep3" class="login" style="max-width:420px; display:none; animation:slideUpFade 0.5s cubic-bezier(0.16,1,0.3,1);">
+            <div class="login-header">
+                <div class="logo-icon" style="background:linear-gradient(135deg,#10b981,#3b82f6);">
+                    <i class="fas fa-lock-open"></i>
+                </div>
+                <h2 style="color:#f8fafc;">Reset Password</h2>
+                <p>Create a new secure password for your account.</p>
+            </div>
+
+            <div class="input-group" style="position:relative;">
+                <input type="password" id="fpNewPass" class="input-control" placeholder="New password (min 6 chars)" style="padding-right:46px;">
+                <i class="fas fa-lock"></i>
+                <i class="fas fa-eye toggle-eye" onclick="togglePasswordVisibility('fpNewPass', this)" title="Show/Hide Password"></i>
+            </div>
+            <div class="input-group" style="position:relative;">
+                <input type="password" id="fpConfirmPass" class="input-control" placeholder="Confirm new password" style="padding-right:46px;">
+                <i class="fas fa-lock-open"></i>
+                <i class="fas fa-eye toggle-eye" onclick="togglePasswordVisibility('fpConfirmPass', this)" title="Show/Hide Password"></i>
+            </div>
+            <div id="fpPassError" class="error-message" style="color:#ef4444; font-size:12px; margin-top:-12px; margin-bottom:10px; display:none;"></div>
+
+            <button class="btn-login" onclick="fpResetPassword()" style="background:linear-gradient(135deg,#10b981,#3b82f6);">
+                <span>Reset Password</span><i class="fas fa-check-double"></i>
+            </button>
+        </div>
+
+    </div>
+    <!-- ====== END FORGOT PASSWORD OVERLAY ====== -->
 
     <section class="landing-features-section">
         <div class="section-headline">
@@ -879,9 +996,12 @@ function login() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
     currentRole = document.getElementById('role').value;
-    
+
     if (!username || !password) return showToast('Please enter credentials.', true);
-    if (username !== 'admin' || password !== 'password') return showToast('Invalid credentials.', true);
+
+    // Accept either the original password or one set via the Forgot Password flow
+    const validPassword = window._demoNewPassword || 'password';
+    if (username !== 'admin' || password !== validPassword) return showToast('Invalid credentials.', true);
 
     // Hide Entire Landing/Login Structure and mount backoffice view
     document.getElementById('loginWrapper').style.display = 'none';
@@ -890,14 +1010,14 @@ function login() {
     // Role-Based Access Routing Constraints
     const restrictedToAdmin = ['menuPayments', 'menuDatabase', 'menuAnalytics', 'revenueCard'];
     const restrictedToInstructor = ['menuStudents', 'menuInstructors', 'menuVehicles'];
-    
+
     if(currentRole === 'student' || currentRole === 'instructor') {
         restrictedToAdmin.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
     }
     if(currentRole === 'student') {
         restrictedToInstructor.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
     }
-    
+
     showToast(`Welcome back, ${username}!`);
     updateUI();
 }
@@ -1327,9 +1447,185 @@ function clearDatabase() {
     }
 }
 
+function togglePasswordVisibility(inputId, iconEl) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    iconEl.classList.toggle('fa-eye', !isHidden);
+    iconEl.classList.toggle('fa-eye-slash', isHidden);
+}
+
 window.onload = function() {
     updateUI();
 };
+
+/* ============================================================
+   FORGOT PASSWORD / OTP FLOW
+   ============================================================ */
+let _fpOTP = '';            // Generated OTP stored in memory
+let _fpOtpTimer = null;     // Countdown interval handle
+let _fpSecondsLeft = 120;   // 2-minute OTP window
+
+// Registered demo contacts that can receive OTP (mirrors login credentials)
+const REGISTERED_CONTACTS = ['admin@drivesafe.lk', '+94771234567', '0771234567'];
+
+function showForgotPanel() {
+    const overlay = document.getElementById('fpOverlay');
+    overlay.style.display = 'flex';
+    fpGoBack(1); // Always start at step 1
+    document.getElementById('fpContact').value = '';
+    document.getElementById('fpContactError').style.display = 'none';
+}
+
+function hideForgotPanel() {
+    document.getElementById('fpOverlay').style.display = 'none';
+    clearInterval(_fpOtpTimer);
+}
+
+function fpGoBack(toStep) {
+    ['fpStep1','fpStep2','fpStep3'].forEach(id => document.getElementById(id).style.display = 'none');
+    document.getElementById('fpStep' + toStep).style.display = 'block';
+    clearInterval(_fpOtpTimer);
+}
+
+function fpRequestOTP() {
+    const contact = document.getElementById('fpContact').value.trim();
+    const errEl = document.getElementById('fpContactError');
+    errEl.style.display = 'none';
+
+    // Basic format validation
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+    const isPhone = /^(?:\+94|0)[7-9]\d{8}$/.test(contact.replace(/[\s-]/g, ''));
+
+    if (!contact) {
+        errEl.textContent = 'Please enter your email address or mobile number.';
+        errEl.style.display = 'block'; return;
+    }
+    if (!isEmail && !isPhone) {
+        errEl.textContent = 'Enter a valid email address (e.g. you@example.com) or Sri Lankan mobile number.';
+        errEl.style.display = 'block'; return;
+    }
+    // For demo: accept any valid-format contact and show OTP
+    // In production this would call a backend API
+    _fpOTP = String(Math.floor(100000 + Math.random() * 900000));
+
+    // Show OTP in a toast so the demo user can see it (remove in production)
+    showToast(`Demo OTP: ${_fpOTP}  (sent to ${contact})`);
+
+    // Update hint text
+    const hint = isEmail
+        ? `A 6-digit OTP has been sent to <b>${contact}</b>. Check your inbox.`
+        : `A 6-digit OTP has been sent via SMS to <b>${contact}</b>.`;
+    document.getElementById('fpOtpHint').innerHTML = hint;
+
+    // Clear any previous OTP boxes
+    document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.remove('is-invalid'); });
+    document.getElementById('fpOtpError').style.display = 'none';
+
+    // Switch to step 2 and start timer
+    fpGoBack(2);
+    fpStartTimer();
+}
+
+function fpStartTimer() {
+    _fpSecondsLeft = 120;
+    clearInterval(_fpOtpTimer);
+    document.getElementById('resendLink').style.opacity = '0.4';
+    document.getElementById('resendLink').style.pointerEvents = 'none';
+
+    _fpOtpTimer = setInterval(() => {
+        _fpSecondsLeft--;
+        const m = String(Math.floor(_fpSecondsLeft / 60)).padStart(2, '0');
+        const s = String(_fpSecondsLeft % 60).padStart(2, '0');
+        const cd = document.getElementById('otpCountdown');
+        if (cd) cd.textContent = `${m}:${s}`;
+
+        if (_fpSecondsLeft <= 0) {
+            clearInterval(_fpOtpTimer);
+            const timerEl = document.getElementById('otpTimer');
+            if (timerEl) timerEl.innerHTML = '<span style="color:#ef4444;">OTP expired. Please resend.</span>';
+            document.getElementById('resendLink').style.opacity = '1';
+            document.getElementById('resendLink').style.pointerEvents = 'auto';
+        }
+    }, 1000);
+}
+
+function fpResendOTP() {
+    _fpOTP = String(Math.floor(100000 + Math.random() * 900000));
+    showToast(`New Demo OTP: ${_fpOTP}`);
+    document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.remove('is-invalid'); });
+    document.getElementById('fpOtpError').style.display = 'none';
+    document.getElementById('otpTimer').innerHTML = 'OTP expires in <b id="otpCountdown">02:00</b>';
+    fpStartTimer();
+}
+
+function otpAutoTab(el, idx) {
+    el.value = el.value.replace(/[^0-9]/g, '');  // digits only
+    if (el.value && idx < 5) {
+        document.querySelectorAll('.otp-box')[idx + 1].focus();
+    }
+}
+
+function fpVerifyOTP() {
+    const boxes = document.querySelectorAll('.otp-box');
+    const entered = Array.from(boxes).map(b => b.value).join('');
+    const errEl = document.getElementById('fpOtpError');
+    errEl.style.display = 'none';
+    boxes.forEach(b => b.classList.remove('is-invalid'));
+
+    if (entered.length < 6) {
+        errEl.textContent = 'Please enter all 6 digits of the OTP.';
+        errEl.style.display = 'block';
+        boxes.forEach(b => { if (!b.value) b.classList.add('is-invalid'); });
+        return;
+    }
+    if (_fpSecondsLeft <= 0) {
+        errEl.textContent = 'OTP has expired. Please request a new one.';
+        errEl.style.display = 'block'; return;
+    }
+    if (entered !== _fpOTP) {
+        errEl.textContent = 'Incorrect OTP. Please check and try again.';
+        errEl.style.display = 'block';
+        boxes.forEach(b => b.classList.add('is-invalid'));
+        return;
+    }
+
+    clearInterval(_fpOtpTimer);
+    fpGoBack(3);
+    document.getElementById('fpNewPass').value = '';
+    document.getElementById('fpConfirmPass').value = '';
+    document.getElementById('fpPassError').style.display = 'none';
+}
+
+function fpResetPassword() {
+    const newPass    = document.getElementById('fpNewPass').value;
+    const confirmPass= document.getElementById('fpConfirmPass').value;
+    const errEl      = document.getElementById('fpPassError');
+    errEl.style.display = 'none';
+
+    if (newPass.length < 6) {
+        errEl.textContent = 'Password must be at least 6 characters long.';
+        errEl.style.display = 'block'; return;
+    }
+    if (newPass !== confirmPass) {
+        errEl.textContent = 'Passwords do not match. Please re-enter.';
+        errEl.style.display = 'block'; return;
+    }
+
+    // In production: call backend to update password.
+    // For demo: update the in-memory credential check.
+    // We patch the login() function's hard-coded check by storing the new password.
+    window._demoNewPassword = newPass;
+
+    showToast('Password reset successfully! You can now log in with your new password.');
+    hideForgotPanel();
+
+    // Pre-fill login password field with new value for convenience
+    const pwField = document.getElementById('password');
+    if (pwField) pwField.value = newPass;
+}
+
 </script>
 </body>
 </html>
