@@ -354,6 +354,140 @@
             color: #f8fafc;
         }
 
+        /* ── Custom Role Dropdown ── */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+            user-select: none;
+        }
+
+        .dropdown-selected {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #f8fafc;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .dropdown-selected:hover {
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(139,92,246,0.5);
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+        }
+
+        .dropdown-icon-wrap {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .dropdown-arrow {
+            margin-left: auto;
+            color: #64748b;
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0; right: 0;
+            background: #1a2540;
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            z-index: 999;
+            display: none;
+            animation: dropdownFadeIn 0.2s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-menu-custom.open {
+            display: block;
+        }
+
+        .dropdown-item-custom {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 16px;
+            cursor: pointer;
+            transition: background 0.18s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .dropdown-item-custom:last-child { border-bottom: none; }
+
+        .dropdown-item-custom:hover {
+            background: rgba(139,92,246,0.15);
+        }
+
+        .dropdown-item-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .admin-icon      { background: linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; }
+        .instructor-icon { background: linear-gradient(135deg,#10b981,#06b6d4); color:#fff; }
+        .student-icon    { background: linear-gradient(135deg,#f59e0b,#ef4444); color:#fff; }
+
+        .dropdown-item-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .dropdown-item-label {
+            color: #f1f5f9;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .dropdown-item-desc {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .dropdown-item-check {
+            color: #8b5cf6;
+            font-size: 13px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .dropdown-item-check.visible { opacity: 1; }
+
         .btn-login {
             width: 100%;
             padding: 15px;
@@ -621,14 +755,46 @@
                     <i class="fas fa-eye toggle-eye" onclick="togglePasswordVisibility('password', this)" title="Show/Hide Password"></i>
                 </div>
                 
-                <div class="input-group">
-                    <select id="role" class="input-control role-selector">
-                        <option value="admin">Administrator</option>
-                        <option value="instructor">Instructor</option>
-                        <option value="student">Student</option>
-                    </select>
-                    <i class="fas fa-user-shield"></i>
+                <!-- Custom Role Dropdown -->
+                <div class="custom-dropdown" id="roleDropdown">
+                    <div class="dropdown-selected" onclick="toggleRoleDropdown()">
+                        <span class="dropdown-icon-wrap"><i class="fas fa-user-shield" id="roleSelectedIcon"></i></span>
+                        <span id="roleSelectedLabel">Administrator</span>
+                        <i class="fas fa-chevron-down dropdown-arrow" id="dropdownArrow"></i>
+                    </div>
+                    <div class="dropdown-menu-custom" id="roleMenu">
+                        <div class="dropdown-item-custom" onclick="selectRole('admin','fa-user-shield','Administrator','Full system access')">
+                            <div class="dropdown-item-icon admin-icon"><i class="fas fa-user-shield"></i></div>
+                            <div class="dropdown-item-text">
+                                <span class="dropdown-item-label">Administrator</span>
+                                <span class="dropdown-item-desc">Full system access</span>
+                            </div>
+                            <i class="fas fa-check dropdown-item-check" id="check-admin"></i>
+                        </div>
+                        <div class="dropdown-item-custom" onclick="selectRole('instructor','fa-chalkboard-teacher','Instructor','Teaching & scheduling')">
+                            <div class="dropdown-item-icon instructor-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="dropdown-item-text">
+                                <span class="dropdown-item-label">Instructor</span>
+                                <span class="dropdown-item-desc">Teaching &amp; scheduling</span>
+                            </div>
+                            <i class="fas fa-check dropdown-item-check" id="check-instructor"></i>
+                        </div>
+                        <div class="dropdown-item-custom" onclick="selectRole('student','fa-user-graduate','Student','Course &amp; progress view')">
+                            <div class="dropdown-item-icon student-icon"><i class="fas fa-user-graduate"></i></div>
+                            <div class="dropdown-item-text">
+                                <span class="dropdown-item-label">Student</span>
+                                <span class="dropdown-item-desc">Course &amp; progress view</span>
+                            </div>
+                            <i class="fas fa-check dropdown-item-check" id="check-student"></i>
+                        </div>
+                    </div>
                 </div>
+                <!-- Hidden select keeps the value for login() -->
+                <select id="role" style="display:none;">
+                    <option value="admin">Administrator</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="student">Student</option>
+                </select>
                 
                 <button class="btn-login" onclick="login()">
                     <span>Sign In to Terminal</span>
@@ -1447,6 +1613,59 @@ function clearDatabase() {
         showToast('Database wiped fully.', true);
     }
 }
+
+/* ── Custom Role Dropdown ── */
+function toggleRoleDropdown() {
+    const menu  = document.getElementById('roleMenu');
+    const arrow = document.getElementById('dropdownArrow');
+    const isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open', !isOpen);
+    arrow.classList.toggle('open', !isOpen);
+}
+
+function selectRole(value, iconClass, label, desc) {
+    // Update hidden select
+    document.getElementById('role').value = value;
+
+    // Update visible selected row
+    document.getElementById('roleSelectedLabel').textContent = label;
+    const iconEl = document.getElementById('roleSelectedIcon');
+    iconEl.className = 'fas ' + iconClass;
+
+    // Update icon wrap gradient colour
+    const wrap = iconEl.closest('.dropdown-icon-wrap');
+    const gradients = {
+        admin:      'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+        instructor: 'linear-gradient(135deg,#10b981,#06b6d4)',
+        student:    'linear-gradient(135deg,#f59e0b,#ef4444)'
+    };
+    wrap.style.background = gradients[value];
+
+    // Tick marks
+    ['admin','instructor','student'].forEach(r => {
+        const el = document.getElementById('check-' + r);
+        if (el) el.classList.toggle('visible', r === value);
+    });
+
+    // Close menu
+    document.getElementById('roleMenu').classList.remove('open');
+    document.getElementById('dropdownArrow').classList.remove('open');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const dd = document.getElementById('roleDropdown');
+    if (dd && !dd.contains(e.target)) {
+        document.getElementById('roleMenu').classList.remove('open');
+        document.getElementById('dropdownArrow').classList.remove('open');
+    }
+});
+
+// Set initial tick on page load
+window.addEventListener('DOMContentLoaded', function() {
+    const checkEl = document.getElementById('check-admin');
+    if (checkEl) checkEl.classList.add('visible');
+});
 
 function togglePasswordVisibility(inputId, iconEl) {
     const input = document.getElementById(inputId);
