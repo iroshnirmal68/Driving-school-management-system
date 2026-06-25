@@ -664,7 +664,7 @@
 
         /* Theme button pinned inside sidebar */
         .sidebar-theme-btn {
-            width: calc(100% - 0px);
+            width: 100%;
             margin-top: 12px;
             justify-content: center;
             border-radius: 12px;
@@ -673,7 +673,7 @@
             background: rgba(255,255,255,0.07);
             border-color: rgba(255,255,255,0.1);
             color: #cbd5e1;
-            transition: background 0.2s, transform 0.2s;
+            transition: background-color 0.2s, transform 0.2s;
         }
         .sidebar-theme-btn:hover {
             background: rgba(139,92,246,0.2) !important;
@@ -862,7 +862,7 @@
     </div>
 
     <!-- ====== FORGOT PASSWORD OVERLAY ====== -->
-    <div id="fpOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:3000; display:none; justify-content:center; align-items:center; backdrop-filter:blur(6px);">
+    <div id="fpOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:3000; justify-content:center; align-items:center; backdrop-filter:blur(6px);">
 
         <!-- Step 1 : Request OTP -->
         <div id="fpStep1" class="login" style="max-width:420px; animation:slideUpFade 0.5s cubic-bezier(0.16,1,0.3,1);">
@@ -901,12 +901,12 @@
             </div>
 
             <div style="display:flex; gap:8px; justify-content:center; margin-bottom:18px;" id="otpBoxes">
-                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,0)">
-                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,1)">
-                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,2)">
-                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,3)">
-                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,4)">
-                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px;" oninput="otpAutoTab(this,5)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px !important;" oninput="otpAutoTab(this,0)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px !important;" oninput="otpAutoTab(this,1)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px !important;" oninput="otpAutoTab(this,2)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px !important;" oninput="otpAutoTab(this,3)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px !important;" oninput="otpAutoTab(this,4)">
+                <input type="text" maxlength="1" class="input-control otp-box" style="width:48px;text-align:center;font-size:1.4rem;padding:10px 4px !important;" oninput="otpAutoTab(this,5)">
             </div>
             <div id="fpOtpError" class="error-message" style="color:#ef4444; font-size:12px; margin-bottom:10px; display:none; text-align:center;"></div>
 
@@ -1200,13 +1200,7 @@ function setFieldError(fieldId, msg) {
     }
 }
 
-// Theme Engine Synchronization
-const savedDarkMode = localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-if(savedDarkMode) {
-    document.body.classList.add('dark-mode');
-    updateThemeButtonUI(true);
-}
-syncThemeButtonVisibility();
+// Theme Engine Synchronization — initialised after functions are defined (see bottom of script)
 
 // Security Validation Engine Authentication
 function login() {
@@ -1656,8 +1650,8 @@ function seedMockData() {
         { id: 202, name: "Mahinda Alwis", license: "L-DMV-33152", phone: "+94724449999", specialization: "Light Motor Cars", availability: "Available" }
     ];
     db.vehicles = [
-        { id: 301, name: "Toyota Vitz Pro", model: "Toyota Vitz", plate: "WP CAD-2291", transmission: "Automatic", status: "Active", serviceDate: "2026-04-12" },
-        { id: 302, name: "Suzuki Alto Custom", model: "Suzuki Alto", plate: "WP CAA-8831", transmission: "Manual", status: "Active", serviceDate: "2026-05-01" }
+        { id: 301, model: "Toyota Vitz", plate: "WP CAD-2291", transmission: "Automatic", status: "Active", serviceDate: "2026-04-12" },
+        { id: 302, model: "Suzuki Alto", plate: "WP CAA-8831", transmission: "Manual", status: "Active", serviceDate: "2026-05-01" }
     ];
     db.lessons = [
         { id: 401, student: "Nimlesh Perera", instructor: "Captain Ranjith Silva", vehicle: "Toyota Vitz [WP CAD-2291]", dateTime: "2026-06-20T10:30", status: "Scheduled" }
@@ -1725,11 +1719,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Set initial tick on page load
-window.addEventListener('DOMContentLoaded', function() {
-    const checkEl = document.getElementById('check-admin');
-    if (checkEl) checkEl.classList.add('visible');
-});
+// Initial tick set inside window.onload below
 
 function togglePasswordVisibility(inputId, iconEl) {
     const input = document.getElementById(inputId);
@@ -1742,6 +1732,9 @@ function togglePasswordVisibility(inputId, iconEl) {
 
 window.onload = function() {
     updateUI();
+    // Set initial role-dropdown tick mark
+    const checkEl = document.getElementById('check-admin');
+    if (checkEl) checkEl.classList.add('visible');
 };
 
 /* ============================================================
@@ -1909,6 +1902,17 @@ function fpResetPassword() {
     const pwField = document.getElementById('password');
     if (pwField) pwField.value = newPass;
 }
+
+// Theme Engine Synchronization — runs after all functions are defined
+(function initTheme() {
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true' ||
+        (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+        updateThemeButtonUI(true);
+    }
+    syncThemeButtonVisibility();
+})();
 
 </script>
 </body>
