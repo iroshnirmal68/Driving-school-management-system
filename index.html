@@ -7,6 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%238b5cf6'/><stop offset='100%25' stop-color='%2306b6d4'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><circle cx='32' cy='32' r='20' fill='none' stroke='white' stroke-width='3.5'/><circle cx='32' cy='32' r='5' fill='white'/><line x1='32' y1='12' x2='32' y2='20' stroke='white' stroke-width='3.5' stroke-linecap='round'/><line x1='32' y1='44' x2='32' y2='52' stroke='white' stroke-width='3.5' stroke-linecap='round'/><line x1='12' y1='32' x2='20' y2='32' stroke='white' stroke-width='3.5' stroke-linecap='round'/><line x1='44' y1='32' x2='52' y2='32' stroke='white' stroke-width='3.5' stroke-linecap='round'/><line x1='32' y1='27' x2='18' y2='21' stroke='white' stroke-width='3' stroke-linecap='round'/><line x1='32' y1='27' x2='46' y2='21' stroke='white' stroke-width='3' stroke-linecap='round'/></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <style>
         :root {
@@ -732,6 +733,337 @@
             .main { padding: 20px 20px 80px 20px; }
             .analytics-grid { grid-template-columns: 1fr; }
         }
+        /* ==============================
+           SITE FOOTER
+           ============================== */
+        .site-footer {
+            background: #0b1422;
+            color: #94a3b8;
+            position: relative;
+            margin-top: 0;
+        }
+
+        .footer-wave {
+            line-height: 0;
+            overflow: hidden;
+        }
+
+        .footer-wave svg {
+            display: block;
+            width: 100%;
+            height: 60px;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 60px 5% 40px;
+        }
+
+        /* --- Grid --- */
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr 1fr 1.4fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        /* --- Brand --- */
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .footer-logo-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #f8fafc;
+            letter-spacing: -0.5px;
+        }
+
+        .footer-logo-name span {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-tagline {
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: #64748b;
+            margin-bottom: 22px;
+            max-width: 300px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .footer-socials a:hover {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-color: transparent;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* --- Columns --- */
+        .footer-col h4 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-col h4 i {
+            color: #60a5fa;
+            font-size: 12px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-col ul li a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .footer-col ul li a i {
+            font-size: 11px;
+            width: 14px;
+            color: #475569;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #60a5fa;
+            padding-left: 4px;
+        }
+
+        .footer-col ul li a:hover i {
+            color: #60a5fa;
+        }
+
+        /* --- Contact column --- */
+        .footer-contact ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13.5px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .footer-contact ul li i {
+            color: #60a5fa;
+            font-size: 13px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        /* --- Newsletter --- */
+        .footer-newsletter {
+            margin-top: 22px;
+        }
+
+        .footer-newsletter p {
+            font-size: 12px;
+            color: #475569;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .newsletter-row {
+            display: flex;
+            gap: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: #f8fafc;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .newsletter-input::placeholder { color: #475569; }
+
+        .newsletter-btn {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: filter 0.2s;
+        }
+
+        .newsletter-btn:hover { filter: brightness(1.15); }
+
+        /* --- Divider --- */
+        .footer-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+            margin: 32px 0;
+        }
+
+        /* --- Stats bar --- */
+        .footer-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #f8fafc;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 11.5px;
+            color: #475569;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* --- Bottom bar --- */
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .footer-legal {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal a {
+            font-size: 12.5px;
+            color: #475569;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-legal a:hover { color: #60a5fa; }
+
+        .footer-dot {
+            color: #334155;
+            font-size: 12px;
+        }
+
+        .footer-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .footer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .footer-badge i { color: #10b981; font-size: 10px; }
+
+        /* --- Responsive --- */
+        @media (max-width: 1024px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+        }
+
+        @media (max-width: 640px) {
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .footer-stats { justify-content: center; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-legal { justify-content: center; }
+            .footer-badges { justify-content: center; }
+        }
+
     </style>
 </head>
 <body>
@@ -980,6 +1312,188 @@
             </div>
         </div>
     </section>
+
+    <!-- ====== SITE FOOTER ====== -->
+    <footer class="site-footer">
+
+        <!-- Top wave divider -->
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0b1422"/>
+            </svg>
+        </div>
+
+        <div class="footer-inner">
+
+            <!-- Row 1: Brand + columns -->
+            <div class="footer-grid">
+
+                <!-- Brand column -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="footer-logo-icon"><i class="fas fa-car-side"></i></span>
+                        <span class="footer-logo-name">DriveSafe <span>Pro</span></span>
+                    </div>
+                    <p class="footer-tagline">Enterprise-grade fleet &amp; scheduling intelligence for modern driving institutions across Sri Lanka.</p>
+					<div class="footer-socials">
+					<a href="https://www.facebook.com/"
+					   target="_blank"
+					   rel="noopener noreferrer"
+					   title="Facebook"
+					   aria-label="Facebook">
+						<i class="fab fa-facebook-f"></i>
+					</a>
+
+					<a href="https://x.com/"
+					   target="_blank"
+					   rel="noopener noreferrer"
+					   title="X"
+					   aria-label="X">
+						<i class="fab fa-x-twitter"></i>
+					</a>
+
+					<a href="https://www.linkedin.com/"
+					   target="_blank"
+					   rel="noopener noreferrer"
+					   title="LinkedIn"
+					   aria-label="LinkedIn">
+						<i class="fab fa-linkedin-in"></i>
+					</a>
+
+					<a href="https://www.instagram.com/"
+					   target="_blank"
+					   rel="noopener noreferrer"
+					   title="Instagram"
+					   aria-label="Instagram">
+						<i class="fab fa-instagram"></i>
+					</a>
+
+					<a href="https://www.youtube.com/@YourChannel"
+					   target="_blank"
+					   rel="noopener noreferrer"
+					   title="YouTube"
+					   aria-label="YouTube">
+						<i class="fab fa-youtube"></i>
+					</a>
+				</div>
+                </div>
+
+                <!-- Platform column -->
+                <div class="footer-col">
+                    <h4><i class="fas fa-layer-group"></i> Platform</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chart-pie"></i> Dashboard Overview</a></li>
+                        <li><a href="#"><i class="fas fa-user-graduate"></i> Student Management</a></li>
+                        <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Instructor Directory</a></li>
+                        <li><a href="#"><i class="fas fa-car"></i> Fleet Management</a></li>
+                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Lesson Scheduling</a></li>
+                        <li><a href="#"><i class="fas fa-wallet"></i> Billing &amp; Payments</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support column -->
+                <div class="footer-col">
+                    <h4><i class="fas fa-life-ring"></i> Support</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-book-open"></i> Documentation</a></li>
+                        <li><a href="#"><i class="fas fa-graduation-cap"></i> User Guides</a></li>
+                        <li><a href="#"><i class="fas fa-headset"></i> Help Desk</a></li>
+                        <li><a href="#"><i class="fas fa-bug"></i> Report a Bug</a></li>
+                        <li><a href="#"><i class="fas fa-code-branch"></i> Changelog</a></li>
+                        <li><a href="#"><i class="fas fa-shield-halved"></i> Security Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact column -->
+                <div class="footer-col footer-contact">
+                    <h4><i class="fas fa-address-card"></i> Contact Us</h4>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>42 Lotus Tower Rd, Colombo 07<br>Western Province, Sri Lanka</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+94 77 692 8542</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>support@drivesafepro.lk</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Mon – Fri &nbsp;|&nbsp; 8:00 AM – 6:00 PM</span>
+                        </li>
+                    </ul>
+
+                    <!-- Newsletter -->
+                    <div class="footer-newsletter">
+                        <p>Subscribe for system updates:</p>
+                        <div class="newsletter-row">
+                            <input type="email" placeholder="Enter your email" class="newsletter-input" id="footerEmail">
+                            <button class="newsletter-btn" onclick="footerSubscribe()"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Divider -->
+            <div class="footer-divider"></div>
+
+            <!-- Row 2: Stats bar -->
+            <div class="footer-stats">
+                <div class="footer-stat">
+                    <span class="stat-value">2,400+</span>
+                    <span class="stat-label">Students Managed</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="stat-value">180+</span>
+                    <span class="stat-label">Certified Instructors</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="stat-value">95+</span>
+                    <span class="stat-label">Fleet Vehicles</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="stat-value">99.8%</span>
+                    <span class="stat-label">Uptime SLA</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="stat-value">v2.2</span>
+                    <span class="stat-label">Stable Release</span>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="footer-divider"></div>
+
+            <!-- Row 3: Bottom bar -->
+            <div class="footer-bottom">
+                <p class="footer-copy">
+                    &copy; <span id="footerYear"></span> DriveSafe Pro. All rights reserved.
+                    Built with <i class="fas fa-heart" style="color:#ef4444;"></i> in Sri Lanka.
+                </p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <span class="footer-dot">·</span>
+                    <a href="#">Terms of Service</a>
+                    <span class="footer-dot">·</span>
+                    <a href="#">Cookie Policy</a>
+                    <span class="footer-dot">·</span>
+                    <a href="#">Accessibility</a>
+                </div>
+                <div class="footer-badges">
+                    <span class="footer-badge"><i class="fas fa-lock"></i> SSL Secured</span>
+                    <span class="footer-badge"><i class="fas fa-database"></i> GDPR Ready</span>
+                    <span class="footer-badge"><i class="fas fa-check-circle"></i> ISO 27001</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <!-- ====== END FOOTER ====== -->
+
 </div>
 
 <div class="dashboard" id="system">
@@ -1913,6 +2427,21 @@ function fpResetPassword() {
     }
     syncThemeButtonVisibility();
 })();
+/* ── Footer Utilities ── */
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+function footerSubscribe() {
+    const input = document.getElementById('footerEmail');
+    const email = input.value.trim();
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!isEmail) {
+        showToast('Please enter a valid email address.', true);
+        input.focus();
+        return;
+    }
+    showToast(`✓ Subscribed! Updates will be sent to ${email}`);
+    input.value = '';
+}
 
 </script>
 </body>
