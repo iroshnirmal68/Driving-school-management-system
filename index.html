@@ -1503,7 +1503,7 @@
             <button id="sidebarToggle" onclick="toggleSidebar()" title="Toggle Sidebar">
                 <i class="fas fa-bars"></i>
             </button>
-            <h2>🚗 DriveSafe</h2>
+            <h2 onclick="document.querySelector('.sidebar a[title=\'Dashboard\']').click()" style="cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" title="Return to Dashboard">🚗 DriveSafe</h2>
             <a class="active" onclick="showSection('dashboard', this)" title="Dashboard"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
             <a onclick="showSection('students', this)" id="menuStudents" title="Students"><i class="fas fa-user-graduate"></i> <span>Students</span></a>
             <a onclick="showSection('instructors', this)" id="menuInstructors" title="Instructors"><i class="fas fa-chalkboard-teacher"></i> <span>Instructors</span></a>
