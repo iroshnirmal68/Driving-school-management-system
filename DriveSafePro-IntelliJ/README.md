@@ -3,10 +3,7 @@
 A Maven project for IntelliJ IDEA using Java 17, Spring Boot, a responsive static HTML/CSS/JavaScript frontend, REST endpoints, and a file-backed H2 database.
 
 ## Open and run
-1. Extract `DriveSafePro-IntelliJ.zip`.
-2. Open the `DriveSafePro-IntelliJ` folder in IntelliJ IDEA.
-3. Use JDK 17 or newer and allow IntelliJ to import the Maven project.
-4. Run `src/main/java/com/drivesafe/pro/DriveSafeApplication.java`, or run `mvn spring-boot:run` from the project root.
+
 5. Open http://localhost:8080/
 
 ## Demo login
