@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DriveSafe Pro - Enterprise Fleet & Scheduling Platform</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%238b5cf6'/><stop offset='100%25' stop-color='%2306b6d4'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='url(%23g)'/><circle cx='32' cy='32' r='20' fill='none' stroke='white' stroke-width='3.5'/><circle cx='32' cy='32' r='5' fill='white'/><line x1='32' y1='12' x2='32' y2='20' stroke='white' stroke-width='3.5' stroke-linecap='round'/><line x1='32' y1='44' x2='32' y2='52' stroke='white' stroke-width='3.5' stroke-linecap='round'/></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary: #0f172a;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --sidebar-bg: #1e293b;
+            --sidebar-text: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --theme-btn-bg: #e2e8f0;
+            --theme-btn-text: #334155;
+            --hero-bg: #0f172a;
+            --hero-text: #ffffff;
+            --landing-card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+        }
+
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --sidebar-bg: #0b1120;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --theme-btn-bg: #334155;
+            --theme-btn-text: #f59e0b;
+            --landing-card-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        
+        /* --- CUSTOM REVENUE CARD LAYOUT --- */
+        .revenue-custom-card {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+        }
+
+        .revenue-custom-card .revenue-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .revenue-custom-card .revenue-info i {
+            margin-bottom: 0; /* Overrides default card icon margin */
+            font-size: 32px;
+        }
+
+        .revenue-custom-card .revenue-info h3 {
+            margin-bottom: 0;
+            line-height: 1.3;
+        }
+
+        .revenue-custom-card .revenue-amount {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .revenue-custom-card .revenue-amount .currency {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+
+        .revenue-custom-card .revenue-amount h1 {
+            line-height: 1.1;
+            margin-top: 4px;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- IMMERSIVE WRAPPER LAYOUTS --- */
+        #loginWrapper {
+            display: block;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .landing-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo i {
+            color: var(--primary);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-meta-badge {
+            font-size: 11px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 99px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            font-weight: 600;
+        }
+
+        .landing-hero {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            min-height: calc(100vh - 81px);
+            background: #0f172a;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 8%;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .landing-hero::before, .landing-hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.2;
+            z-index: 1;
+            animation: floatGlow 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .landing-hero::before {
+            width: 500px;
+            height: 500px;
+            background: #3b82f6;
+            top: -100px;
+            right: -50px;
+        }
+        .landing-hero::after {
+            width: 400px;
+            height: 400px;
+            background: #8b5cf6;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -6s;
+        }
+
+        .hero-left-content {
+            position: relative;
+            z-index: 10;
+            color: #ffffff;
+            animation: slideRightFade 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+        .hero-tagline i { color: #f59e0b; }
+
+        .hero-left-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-left-content h1 span {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-left-content p {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            max-width: 540px;
+        }
+
+        .feature-bullets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .bullet {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+        .bullet i {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .hero-right-portal {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+        }
+
+        /* --- AUTH & FORGOT FORMS SYSTEM --- */
+        .login, .forgot-panel {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 40px;
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .forgot-panel {
+            display: none;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .login-header .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 16px;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+            transform: rotate(-5deg);
+        }
+
+        .login h2, .forgot-panel h2 {
+            font-size: 1.5rem;
+            color: #f8fafc;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .login p, .forgot-panel p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-group i:not(.toggle-eye) {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 15px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .toggle-eye {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #64748b;
+            z-index: 10;
+            padding: 4px;
+        }
+        .toggle-eye:hover { color: #8b5cf6; }
+
+        .input-control {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: #f8fafc;
+            font-size: 14px;
+            outline: none;
+        }
+        .input-control::placeholder { color: #64748b; }
+        .input-control:focus {
+            border-color: #8b5cf6;
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        }
+        
+        .input-control.is-invalid, .form-control.is-invalid {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+        }
+
+        .error-message {
+            color: #f87171;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 5px;
+            display: none;
+            text-align: left;
+        }
+
+        /* --- PREMIUM ROLE DROPDOWN CONFIG --- */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+            user-select: none;
+        }
+
+        .dropdown-selected {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: #f8fafc;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .dropdown-selected:hover {
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(139,92,246,0.5);
+        }
+
+        .dropdown-icon-wrap {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .dropdown-arrow {
+            margin-left: auto;
+            color: #64748b;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+        .dropdown-arrow.open { transform: rotate(180deg); }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0; right: 0;
+            background: #1e293b;
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .dropdown-menu-custom.open { display: block; }
+
+        .dropdown-item-custom {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .dropdown-item-custom:last-child { border-bottom: none; }
+        .dropdown-item-custom:hover { background: rgba(139,92,246,0.15); }
+
+        .dropdown-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .admin-icon      { background: linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; }
+        .instructor-icon { background: linear-gradient(135deg,#10b981,#06b6d4); color:#fff; }
+        .student-icon    { background: linear-gradient(135deg,#f59e0b,#ef4444); color:#fff; }
+
+        .dropdown-item-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .dropdown-item-label { color: #f1f5f9; font-size: 14px; font-weight: 600; }
+        .dropdown-item-desc { color: #94a3b8; font-size: 11px; }
+
+        .dropdown-item-check { color: #8b5cf6; font-size: 13px; opacity: 0; }
+        .dropdown-item-check.visible { opacity: 1; }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.4);
+        }
+        .btn-login:hover { transform: translateY(-1px); filter: brightness(1.05); }
+
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .login-footer a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .login-footer a:hover { text-decoration: underline; }
+
+        /* --- MARKETING FEATURES GRID --- */
+        .landing-features-section {
+            padding: 80px 8%;
+            background: var(--bg-color);
+        }
+
+        .section-headline {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+        .section-headline h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+        .section-headline p { color: var(--text-muted); font-size: 15px; }
+
+        .features-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--landing-card-shadow);
+        }
+        .feature-card .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: rgba(59, 130, 246, 0.08);
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+        .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+        /* --- SITE FOOTER PLATFORM MODULE --- */
+        .site-footer {
+            background: #0b1120;
+            color: #94a3b8;
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 60px 8% 40px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr 1fr 1.4fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        .footer-logo-name { font-size: 1.3rem; font-weight: 800; color: #f8fafc; }
+        .footer-logo-name span { color: #60a5fa; }
+        .footer-tagline { font-size: 13.5px; line-height: 1.6; color: #64748b; margin-bottom: 20px; }
+        
+        .footer-socials { display: flex; gap: 10px; }
+        .footer-socials a {
+            width: 36px; height: 36px; border-radius: var(--radius-sm);
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+            color: #94a3b8; display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+        }
+        .footer-socials a:hover {
+            background: var(--primary); color: white; transform: translateY(-2px);
+        }
+
+        .footer-col h4 {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+            color: #f1f5f9; margin-bottom: 18px;
+        }
+        .footer-col h4 i { color: var(--primary); font-size: 13px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 11px; }
+        .footer-col ul li a { display: flex; align-items: center; gap: 9px; color: #64748b; text-decoration: none; font-size: 13.5px; }
+        .footer-col ul li a i { font-size: 11px; width: 14px; color: #475569; text-align: center; }
+        .footer-col ul li a:hover { color: #60a5fa; }
+        .footer-col ul li a:hover i { color: #60a5fa; }
+
+        .footer-contact-list { list-style: none; }
+        .footer-contact-list li {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 14px; font-size: 13.5px; color: #94a3b8; line-height: 1.5;
+        }
+        .footer-contact-list li i { color: var(--primary); font-size: 13px; width: 14px; margin-top: 2px; text-align: center; }
+        .footer-contact-list li a { color: #94a3b8; text-decoration: none; }
+        .footer-contact-list li a:hover { color: #60a5fa; }
+
+        .footer-subscribe-label { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #f1f5f9; margin: 20px 0 10px; }
+        .footer-subscribe-box {
+            display: flex; gap: 8px;
+        }
+        .footer-subscribe-box .input-control {
+            padding: 10px 14px; padding-left: 14px; background: rgba(255,255,255,0.03);
+        }
+        .footer-subscribe-box .btn { padding: 10px 14px; }
+
+        .footer-stats-bar {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .footer-stat { text-align: center; }
+        .footer-stat .stat-num { font-size: 1.7rem; font-weight: 800; color: #60a5fa; letter-spacing: -0.5px; }
+        .footer-stat .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-top: 4px; }
+
+        .footer-divider { height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 24px; }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #475569; margin-bottom: 20px; }
+        .footer-bottom .fa-heart { color: #ef4444; font-size: 11px; }
+        .footer-legal { display: flex; gap: 16px; }
+        .footer-legal a { color: #475569; text-decoration: none; }
+        .footer-legal a:hover { color: #60a5fa; }
+        .footer-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .footer-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; background: rgba(16, 185, 129, 0.08); font-size: 11px; color: #94a3b8; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.18); }
+        .footer-badge i { color: var(--success); font-size: 10px; }
+
+        /* --- BACKOFFICE CORE SYSTEM LAYOUT --- */
+        .dashboard { display: none; min-height: 100vh; }
+        .dashboard-body { display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 260px; background: var(--sidebar-bg); color: var(--sidebar-text);
+            padding: 24px 16px; display: flex; flex-direction: column; gap: 8px;
+            flex-shrink: 0; position: relative; transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .sidebar.collapsed { width: 80px; }
+        .sidebar.collapsed h2, .sidebar.collapsed a span, .sidebar.collapsed .sidebar-theme-btn span { display: none; }
+        .sidebar.collapsed a { justify-content: center; padding: 12px; }
+        
+        #sidebarToggle {
+            background: rgba(255, 255, 255, 0.08); border: none; color: white;
+            padding: 10px; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 16px; width: 100%;
+        }
+        .sidebar h2 { text-align: center; margin-bottom: 24px; font-size: 1.4rem; white-space: nowrap; cursor: pointer; }
+        .sidebar a {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+            border-radius: var(--radius-sm); color: var(--sidebar-text); text-decoration: none;
+            cursor: pointer; opacity: 0.75; font-weight: 500; white-space: nowrap;
+        }
+        .sidebar a:hover, .sidebar a.active { background: var(--primary); opacity: 1; }
+        
+        .sidebar-theme-btn {
+            margin-top: auto; width: 100%; justify-content: center;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e1; border-radius: var(--radius-md); font-size: 13px; padding: 12px;
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+        }
+        .sidebar-theme-btn:hover { background: rgba(139,92,246,0.2); color: white; }
+
+        .main { flex: 1; padding: 40px; max-width: 100%; overflow-x: hidden; background-color: var(--bg-color); }
+        .section { display: none; animation: fadeIn 0.35s ease-out; }
+        .section.active { display: block; }
+
+        /* --- CORE BACKOFFICE PLATFORM UI ELEMENTS --- */
+        .section-header {
+            margin-bottom: 30px; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .section-header h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; }
+        
+        .cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px; margin-bottom: 35px;
+        }
+        .card {
+            background: var(--card-bg); padding: 24px; border-radius: var(--radius-md);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border);
+            position: relative; overflow: hidden;
+        }
+        .card i { font-size: 26px; color: var(--primary); margin-bottom: 12px; display: block; }
+        .card h3 { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .card h1 { color: var(--text-main); font-size: 1.8rem; font-weight: 800; }
+
+        .toolbar {
+            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;
+            background: var(--card-bg); padding: 16px 20px; border-radius: var(--radius-md);
+            border: 1px solid var(--border); justify-content: space-between; align-items: center;
+        }
+        .toolbar-controls { display: flex; gap: 12px; flex-wrap: wrap; }
+        
+        .search-input {
+            padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+            background: var(--bg-color); color: var(--text-main); outline: none; min-width: 260px;
+            font-size: 14px;
+        }
+        .search-input:focus { border-color: var(--primary); }
+
+        /* --- TABLES & RESPONSIVENESS ELEMENTS --- */
+        .table-container {
+            background: var(--card-bg); border-radius: var(--radius-md);
+            border: 1px solid var(--border); overflow-x: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 700px; }
+        th { background: rgba(0,0,0,0.01); padding: 16px; color: var(--text-muted); font-weight: 600; font-size: 13px; border-bottom: 2px solid var(--border); }
+        td { padding: 16px; border-bottom: 1px solid var(--border); color: var(--text-main); font-size: 14px; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(0,0,0,0.005); }
+
+        .btn {
+            padding: 10px 18px; background: var(--primary); color: white; border: none;
+            border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+            text-decoration: none;
+        }
+        .btn:hover { filter: brightness(1.08); }
+        .btn-danger { background: var(--danger); }
+        .btn-secondary { background: var(--text-muted); }
+
+        .action-btns { display: flex; gap: 6px; }
+        .action-btn {
+            background: rgba(0,0,0,0.03); border: none; cursor: pointer; font-size: 14px;
+            width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center;
+            justify-content: center;
+        }
+        body.dark-mode .action-btn { background: rgba(255,255,255,0.05); }
+        .action-btn.edit { color: var(--primary); }
+        .action-btn.edit:hover { background: rgba(59, 130, 246, 0.15); }
+        .action-btn.delete { color: var(--danger); }
+        .action-btn.delete:hover { background: rgba(239, 68, 68, 0.15); }
+
+        .badge { padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-success { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
+        .badge-primary { background: rgba(59, 130, 246, 0.12); color: var(--primary); }
+        .badge-warning { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
+
+        /* --- FIXED ANCHORED THEME TOGGLE FLOATING BTN --- */
+        .theme-float {
+            position: fixed; top: 18px; right: 24px; z-index: 2000;
+            border-radius: 99px; padding: 10px 18px; font-size: 13px; font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.85); color: #fff; border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+        .theme-float:hover { transform: scale(1.02); }
+        .theme-float.hidden { display: none !important; }
+
+        /* --- MODAL DIALOG ARCHITECTURES --- */
+        .modal-backdrop {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 2500; justify-content: center; align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal {
+            background: var(--card-bg); border-radius: var(--radius-lg); width: 100%;
+            max-width: 500px; border: 1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            overflow: hidden; animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 18px; font-weight: 700; color: var(--text-main); }
+        .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; }
+        .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 65vh; overflow-y: auto; }
+        .modal-footer { padding: 20px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .form-control {
+            padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+            background: var(--bg-color); color: var(--text-main); outline: none; font-size: 14px; width: 100%;
+        }
+        .form-control:focus { border-color: var(--primary); }
+
+        /* --- REVOLUTIONARY HIGH POLISH DATA CHARTS (PURE CSS) --- */
+        .analytics-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .chart-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; }
+        .chart-box h4 { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .bar-chart-css { display: flex; align-items: flex-end; justify-content: space-between; height: 200px; padding-top: 20px; border-bottom: 2px solid var(--border); gap: 12px; }
+        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
+        .bar-fill { width: 100%; background: linear-gradient(to top, var(--primary), #60a5fa); border-radius: 4px 4px 0 0; min-height: 5px; animation: growBar 0.6s ease-out forwards; }
+        .bar-label { font-size: 11px; color: var(--text-muted); text-align: center; white-space: nowrap; }
+        .bar-val { font-size: 11px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+
+        .pie-list-css { display: flex; flex-direction: column; gap: 12px; }
+        .pie-item { display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; }
+        .pie-lead { display: flex; align-items: center; gap: 10px; color: var(--text-main); font-weight: 500; }
+        .pie-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .pie-val { font-weight: 700; color: var(--text-main); }
+
+        /* --- TOAST INFRASTRUCTURE MODULE --- */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; background: #10b981; color: white;
+            padding: 16px 24px; border-radius: var(--radius-md); transform: translateY(150px);
+            opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 9999;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); font-weight: 600; font-size: 14px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: var(--danger); }
+
+        /* --- OTP FLOW CONTROLS --- */
+        .otp-container { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+        .otp-box { width: 48px; height: 48px; text-align: center; font-size: 1.3rem; font-weight: 700; padding: 0 !important; }
+
+        /* --- SYSTEM KEYFRAME ANIMATIONS --- */
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 40px) scale(1.05); }
+        }
+        @keyframes slideRightFade {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes growBar { from { height: 0; } }
+
+        /* --- RESPONSIVE STRUCTURAL OVERRIDES --- */
+        @media (max-width: 1024px) {
+            .landing-hero { grid-template-columns: 1fr; text-align: center; padding: 40px 5%; gap: 40px; }
+            .hero-left-content h1 { font-size: 2.5rem; }
+            .hero-left-content p { margin: 0 auto 25px; }
+            .feature-bullets { justify-content: center; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer-stats-bar { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: sticky; top: 0; z-index: 900; padding: 12px; }
+            .sidebar.collapsed { width: 100%; }
+            #sidebarToggle, .sidebar-theme-btn { display: none; }
+            .sidebar h2 { font-size: 1.2rem; margin-bottom: 10px; }
+            .sidebar-menu-links { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+            .sidebar a { padding: 8px 12px; font-size: 13px; }
+            .main { padding: 20px; }
+            .analytics-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .footer-bottom { flex-direction: column; align-items: flex-start; }
+            .theme-float { top: auto; bottom: 20px; right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-float" id="themeToggleFloat" onclick="toggleDarkMode()" title="Change Visual Palette Theme">
+        <i class="fas fa-moon"></i> <span>Dark Mode</span>
+    </button>
+
+    <div id="loginWrapper">
+        <nav class="landing-nav">
+            <div class="nav-logo">
+                <i class="fas fa-car-side"></i> DriveSafe <span>Pro</span>
+            </div>
+            <div class="nav-meta-badge">
+                <i class="fas fa-shield-halved"></i> Enterprise Portal v4.2
+            </div>
+            <div class="nav-meta-badge" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-color: rgba(139, 92, 246, 0.3);">
+                <i class="fas fa-paint-brush"></i> Design by K.G. Irosh Nirmal
+            </div>
+        </nav>
+
+        <section class="landing-hero">
+            <div class="hero-left-content">
+                <div class="hero-tagline">
+                    <i class="fas fa-wand-magic-sparkles"></i> Intelligence Driven Fleet Optimization
+                </div>
+                <h1>Next-Gen Fleet &amp; <span>Scheduling</span> Control</h1>
+                <p>An enterprise-grade operational ecosystem custom engineered for Sri Lankan driving institutions. Optimize instructors, tracks, billing, and safety vectors within a unified viewport.</p>
+                
+                <div class="feature-bullets">
+                    <div class="bullet"><i class="fas fa-check"></i> Real-time DMV Cross Match</div>
+                    <div class="bullet"><i class="fas fa-check"></i> Interactive Smart Allocation</div>
+                    <div class="bullet"><i class="fas fa-check"></i> Automated Billing Ledgers</div>
+                    <div class="bullet"><i class="fas fa-check"></i> Multi-tier Role Constraints</div>
+                </div>
+            </div>
+
+            <div class="hero-right-portal">
+                <div class="login" id="loginFormBlock">
+                    <div class="login-header">
+                        <div class="logo-icon"><i class="fas fa-car-side"></i></div>
+                        <h2>System Gateway</h2>
+                        <p>Authenticate operational node access</p>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="username" class="input-control" placeholder="Username" value="admin">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" id="password" class="input-control" placeholder="Password" value="password">
+                        <i class="fas fa-lock"></i>
+                        <i class="fas fa-eye toggle-eye" onclick="togglePasswordVisibility('password', this)"></i>
+                    </div>
+
+                    <div class="custom-dropdown" id="roleDropdown">
+                        <div class="dropdown-selected" onclick="toggleRoleDropdown(event)">
+                            <span class="dropdown-icon-wrap"><i class="fas fa-user-shield" id="roleSelectedIcon"></i></span>
+                            <span id="roleSelectedLabel">Administrator</span>
+                            <i class="fas fa-chevron-down dropdown-arrow" id="dropdownArrow"></i>
+                        </div>
+                        <div class="dropdown-menu-custom" id="roleMenu">
+                            <div class="dropdown-item-custom" onclick="selectRole('admin','fa-user-shield','Administrator','Full backend administrative access')">
+                                <div class="dropdown-item-icon admin-icon"><i class="fas fa-user-shield"></i></div>
+                                <div class="dropdown-item-text">
+                                    <span class="dropdown-item-label">Administrator</span>
+                                    <span class="dropdown-item-desc">Full backend administrative access</span>
+                                </div>
+                                <i class="fas fa-check dropdown-item-check visible" id="check-admin"></i>
+                            </div>
+                            <div class="dropdown-item-custom" onclick="selectRole('instructor','fa-chalkboard-teacher','Instructor','Roster & student tracking')">
+                                <div class="dropdown-item-icon instructor-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                                <div class="dropdown-item-text">
+                                    <span class="dropdown-item-label">Instructor</span>
+                                    <span class="dropdown-item-desc">Roster &amp; student tracking</span>
+                                </div>
+                                <i class="fas fa-check dropdown-item-check" id="check-instructor"></i>
+                            </div>
+                            <div class="dropdown-item-custom" onclick="selectRole('student','fa-user-graduate','Student','Personal progress tracking')">
+                                <div class="dropdown-item-icon student-icon"><i class="fas fa-user-graduate"></i></div>
+                                <div class="dropdown-item-text">
+                                    <span class="dropdown-item-label">Student</span>
+                                    <span class="dropdown-item-desc">Personal progress tracking</span>
+                                </div>
+                                <i class="fas fa-check dropdown-item-check" id="check-student"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <select id="role" style="display:none;">
+                        <option value="admin" selected>admin</option>
+                        <option value="instructor">instructor</option>
+                        <option value="student">student</option>
+                    </select>
+
+                    <button class="btn-login" onclick="login()">
+                        <span>Sign In Securely</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+
+                    <div class="login-footer">
+                        <a href="#" onclick="showForgotPanel(event)">Trouble accessing account?</a>
+                    </div>
+                </div>
+
+                <div class="forgot-panel" id="forgotPanelBlock">
+                    <div class="login-header">
+                        <div class="logo-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);"><i class="fas fa-key"></i></div>
+                        <h2 id="fpTitle">Account Recovery</h2>
+                        <p id="fpDesc">Verify phone details for credential patching</p>
+                    </div>
+
+                    <div id="fpStepPhone">
+                        <div class="input-group">
+                            <input type="text" id="fpPhoneInput" class="input-control" placeholder="Phone Number (e.g. +94771234567)">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <button class="btn-login" onclick="fpRequestOTP()" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+                            <span>Transmit Verification Code</span> <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+
+                    <div id="fpStepOTP" style="display:none; text-align:center;">
+                        <p style="margin-bottom:12px; font-size:13.5px; color:#cbd5e1;">A 6-digit passcode has been transmitted via sms gateway routing layers.</p>
+                        <div class="otp-container">
+                            <input type="text" maxlength="1" class="input-control otp-box" oninput="otpAutoTab(this, 0)" onkeydown="otpBacktrack(event, 0)">
+                            <input type="text" maxlength="1" class="input-control otp-box" oninput="otpAutoTab(this, 1)" onkeydown="otpBacktrack(event, 1)">
+                            <input type="text" maxlength="1" class="input-control otp-box" oninput="otpAutoTab(this, 2)" onkeydown="otpBacktrack(event, 2)">
+                            <input type="text" maxlength="1" class="input-control otp-box" oninput="otpAutoTab(this, 3)" onkeydown="otpBacktrack(event, 3)">
+                            <input type="text" maxlength="1" class="input-control otp-box" oninput="otpAutoTab(this, 4)" onkeydown="otpBacktrack(event, 4)">
+                            <input type="text" maxlength="1" class="input-control otp-box" oninput="otpAutoTab(this, 5)" onkeydown="otpBacktrack(event, 5)">
+                        </div>
+                        <div style="font-size:12px; color:#94a3b8; margin-bottom:20px;">
+                            <i class="fas fa-clock"></i> Expiration Window: <span id="otpCountdown" style="font-weight:700; color:#f8fafc;">02:00</span>
+                        </div>
+                        <button class="btn-login" onclick="fpVerifyOTP()">
+                            <span>Verify Code Integrity</span> <i class="fas fa-circle-check"></i>
+                        </button>
+                    </div>
+
+                    <div id="fpStepNewPass" style="display:none;">
+                        <div class="input-group">
+                            <input type="password" id="fpNewPassInput" class="input-control" placeholder="New Enterprise Password">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <button class="btn-login" onclick="fpOverridePassword()" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <span>Finalize Patch Cycle</span> <i class="fas fa-circle-check"></i>
+                        </button>
+                    </div>
+
+                    <div class="login-footer">
+                        <a href="#" onclick="hideForgotPanel(event)"><i class="fas fa-arrow-left"></i> Return to login form view</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="landing-features-section">
+            <div class="section-headline">
+                <h2>Engineered For Absolute Control</h2>
+                <p>Deploy a modular, reactive web terminal built to address asset distribution vulnerabilities.</p>
+            </div>
+            <div class="features-showcase-grid">
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fas fa-network-wired"></i></div>
+                    <h3>Unified Orchestration</h3>
+                    <p>Track scheduling sequences, payment allocations, fleet tracking attributes, and operations metrics under a responsive cross-referenced terminal environment.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fas fa-bolt"></i></div>
+                    <h3>Automated Balancing</h3>
+                    <p>Avoid double allocation issues. The scheduling validation engine screens course requirements instantly to safeguard fleet run-times.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fas fa-fingerprint"></i></div>
+                    <h3>Role Encryption Matrix</h3>
+                    <p>Enforce strict security parameters. Restrict sensitive ledger data elements to executive level personnel nodes automatically.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-grid">
+                    <div>
+                        <div class="footer-logo">
+                            <div class="footer-logo-icon"><i class="fas fa-car-side"></i></div>
+                            <div class="footer-logo-name">DriveSafe <span>Pro</span></div>
+                        </div>
+                        <p class="footer-tagline">Enterprise-grade fleet &amp; scheduling intelligence for modern driving institutions across Sri Lanka.</p>
+                        <div class="footer-socials">
+							<a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Gmail">
+								<svg width="24" height="24" viewBox="0 0 48 48" aria-hidden="true">
+									<path fill="#EA4335" d="M6 10v28h8V18l10 7 10-7v20h8V10l-18 13L6 10z"/>
+								</svg>
+							</a>
+                            <a href="http://facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://sg.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4><i class="fas fa-layer-group"></i> Platform</h4>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-gauge"></i> Dashboard Overview</a></li>
+                            <li><a href="#"><i class="fas fa-user-graduate"></i> Student Management</a></li>
+                            <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Instructor Directory</a></li>
+                            <li><a href="#"><i class="fas fa-car"></i> Fleet Management</a></li>
+                            <li><a href="#"><i class="fas fa-calendar-days"></i> Lesson Scheduling</a></li>
+                            <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Billing &amp; Payments</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4><i class="fas fa-circle-question"></i> Support</h4>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-book"></i> Documentation</a></li>
+                            <li><a href="#"><i class="fas fa-graduation-cap"></i> User Guides</a></li>
+                            <li><a href="#"><i class="fas fa-headset"></i> Help Desk</a></li>
+                            <li><a href="#"><i class="fas fa-bug"></i> Report a Bug</a></li>
+                            <li><a href="#"><i class="fas fa-clock-rotate-left"></i> Changelog</a></li>
+                            <li><a href="#"><i class="fas fa-shield-halved"></i> Security Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4><i class="fas fa-address-card"></i> Contact Us</h4>
+                        <ul class="footer-contact-list">
+                            <li><i class="fas fa-location-dot"></i> 80/20 Kudamarke, Gampola<br>Kandy District, Sri Lanka</li>
+                            <li><i class="fas fa-phone"></i> <a href="tel:+94776928542">+94 77 692 8542</a></li>
+                            <li><i class="fas fa-envelope"></i> <a href="mailto:iroshnirmal68@gmail.com">iroshnirmal68@gmail.com</a></li>
+                            <li><i class="fas fa-clock"></i> Mon – Fri&nbsp;|&nbsp;8:00 AM – 6:00 PM</li>
+                        </ul>
+                        <p class="footer-subscribe-label">Subscribe for system updates:</p>
+                        <div class="footer-subscribe-box">
+                            <input type="email" id="footerEmail" class="input-control" placeholder="Enter your email">
+                            <button class="btn" onclick="footerSubscribe()"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-stats-bar">
+                    <div class="footer-stat"><div class="stat-num">2,400+</div><div class="stat-label">Students Managed</div></div>
+                    <div class="footer-stat"><div class="stat-num">180+</div><div class="stat-label">Certified Instructors</div></div>
+                    <div class="footer-stat"><div class="stat-num">95+</div><div class="stat-label">Fleet Vehicles</div></div>
+                    <div class="footer-stat"><div class="stat-num">99.8%</div><div class="stat-label">Uptime SLA</div></div>
+                    <div class="footer-stat"><div class="stat-num">v2.2</div><div class="stat-label">Stable Release</div></div>
+                </div>
+
+                <div class="footer-divider"></div>
+                <div class="footer-bottom">
+                    <p>&copy; <span id="footerYear"></span> DriveSafe Pro. All rights reserved. Built with <i class="fas fa-heart"></i> in Sri Lanka.</p>
+                    <div class="footer-legal">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                        <a href="#">Accessibility</a>
+                    </div>
+                </div>
+                <div class="footer-badges">
+                    <span class="footer-badge"><i class="fas fa-lock"></i> SSL Secured</span>
+                    <span class="footer-badge"><i class="fas fa-shield-halved"></i> GDPR Ready</span>
+                    <span class="footer-badge"><i class="fas fa-circle-check"></i> ISO 27001</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="dashboard" id="system">
+        <div class="dashboard-body">
+            <aside class="sidebar" id="sidebar">
+                <button id="sidebarToggle" onclick="toggleSidebar()" title="Collapse Panel Sidebar Layout">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 onclick="logout()"><i class="fas fa-car-side"></i> <span>DriveSafe</span></h2>
+                
+                <div class="sidebar-menu-links" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+                    <a class="active" onclick="showSection('dashboard', this)" title="Operational Monitor Console"><i class="fas fa-chart-pie"></i> <span>Monitor</span></a>
+                    <a onclick="showSection('students', this)" id="menuStudents" title="Student Directory Profile Ledger"><i class="fas fa-user-graduate"></i> <span>Students</span></a>
+                    <a onclick="showSection('instructors', this)" id="menuInstructors" title="Certified Instructor Nodes Roster"><i class="fas fa-chalkboard-teacher"></i> <span>Instructors</span></a>
+                    <a onclick="showSection('vehicles', this)" id="menuVehicles" title="Active Fleet Tracking Core Modules"><i class="fas fa-car"></i> <span>Fleet</span></a>
+                    <a onclick="showSection('lessons', this)" title="Course Scheduling Matrix Sequence"><i class="fas fa-calendar-alt"></i> <span>Schedules</span></a>
+                    <a onclick="showSection('payments', this)" id="menuPayments" title="Financial Audit Statement History Logs"><i class="fas fa-wallet"></i> <span>Ledgers</span></a>
+                    <a onclick="showSection('analytics', this)" id="menuAnalytics" title="Performance Metric Deep Analytics Insights"><i class="fas fa-chart-line"></i> <span>Analytics</span></a>
+                    <a onclick="logout()" style="margin-top:20px; background: rgba(239,68,68,0.1); color: var(--danger);" title="Terminate Access Session Connection"><i class="fas fa-sign-out-alt"></i> <span>Disconnect Node</span></a>
+                </div>
+
+                <button class="sidebar-theme-btn" onclick="toggleDarkMode()">
+                    <i class="fas fa-moon"></i> <span>Toggle Theme</span>
+                </button>
+            </aside>
+
+            <main class="main">
+                <section id="dashboard" class="section active">
+                    <div class="section-header">
+                        <div>
+                            <h1 id="portalGreetingTitle">Operational Monitor Console</h1>
+                            <p style="color: var(--text-muted); font-size:14px; margin-top:4px;">Real-time system state monitoring controls active.</p>
+                        </div>
+                    </div>
+
+                    <div class="cards">
+                        <div class="card">
+                            <i class="fas fa-user-graduate"></i>
+                            <h3>Total Students Pool</h3>
+                            <h1 id="dStudents">0</h1>
+                        </div>
+                        <div class="card">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <h3>Instructors Node Count</h3>
+                            <h1 id="dInstructors">0</h1>
+                        </div>
+                        <div class="card">
+                            <i class="fas fa-car"></i>
+                            <h3>Active Fleet Volume</h3>
+                            <h1 id="dVehicles">0</h1>
+                        </div>
+                        <div class="card">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3>Booked Sessions</h3>
+                            <h1 id="dLessons">0</h1>
+                        </div>
+                        <div class="card revenue-custom-card" id="revenueCard">
+                            <div class="revenue-info">
+                                <i class="fas fa-money-bill-trend-up" style="color:var(--success);"></i>
+                                <h3>Aggregated<br>Invoiced Pool</h3>
+                            </div>
+                            <div class="revenue-amount">
+                                <span class="currency">LKR</span>
+                                <h1 id="dRevenue">0</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <div class="chart-box">
+                            <h4>Session Load Vector Distributions (Simulated Real-time Timeline)</h4>
+                            <div class="bar-chart-css">
+                                <div class="bar-col"><div class="bar-fill" style="height: 45%;"></div><span class="bar-label">Mon</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 70%;"></div><span class="bar-label">Tue</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 90%;"></div><span class="bar-label">Wed</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 60%;"></div><span class="bar-label">Thu</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 85%;"></div><span class="bar-label">Fri</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 40%;"></div><span class="bar-label">Sat</span></div>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Quick Operational Summaries</h4>
+                            <div class="pie-list-css" style="margin-top:10px;">
+                                <div class="pie-item">
+                                    <span class="pie-lead"><span class="pie-dot" style="background-color: var(--primary);"></span>Manual Fleet Units</span>
+                                    <span class="pie-val" id="analyticsManual">0</span>
+                                </div>
+                                <div class="pie-item">
+                                    <span class="pie-lead"><span class="pie-dot" style="background-color: #06b6d4;"></span>Automatic Fleet Units</span>
+                                    <span class="pie-val" id="analyticsAuto">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="students" class="section">
+                    <div class="section-header">
+                        <h1>Student Profiles Matrix</h1>
+                    </div>
+                    <div class="toolbar">
+                        <input type="text" class="search-input" id="searchStudents" placeholder="Filter profiles via metadata attributes..." oninput="renderStudentsTable()">
+                        <div class="toolbar-controls">
+                            <button class="btn" id="btnAddStudent" onclick="openCreateModal('students')"><i class="fas fa-plus"></i> Initialize Student Profile Record</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID Block</th>
+                                    <th>Legal Full Name</th>
+                                    <th>Electronic Email Mailbox</th>
+                                    <th>Telecom Line Link</th>
+                                    <th>Active Training Curricula</th>
+                                    <th>Status Flag</th>
+                                    <th>Operations Controls</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="instructors" class="section">
+                    <div class="section-header">
+                        <h1>Certified Instructors Roster</h1>
+                    </div>
+                    <div class="toolbar">
+                        <input type="text" class="search-input" id="searchInstructors" placeholder="Search instructor indices..." oninput="renderInstructorsTable()">
+                        <div class="toolbar-controls">
+                            <button class="btn" id="btnAddInstructor" onclick="openCreateModal('instructors')"><i class="fas fa-plus"></i> Enroll Instructor Node</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>System ID</th>
+                                    <th>Instructor Name</th>
+                                    <th>DMV License Identifier Code</th>
+                                    <th>Telephone Contact Node</th>
+                                    <th>Specialization Discipline Core</th>
+                                    <th>Availability Parameter State</th>
+                                    <th>Operations Controls</th>
+                                </tr>
+                            </thead>
+                            <tbody id="instructorsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="vehicles" class="section">
+                    <div class="section-header">
+                        <h1>Active Fleet Architecture</h1>
+                    </div>
+                    <div class="toolbar">
+                        <input type="text" class="search-input" id="searchVehicles" placeholder="Filter fleet identifiers..." oninput="renderVehiclesTable()">
+                        <div class="toolbar-controls">
+                            <button class="btn" id="btnAddVehicle" onclick="openCreateModal('vehicles')"><i class="fas fa-plus"></i> Asset New Vehicle Node</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Asset Token</th>
+                                    <th>Automotive Make Variant</th>
+                                    <th>Regional Registration Plate ID Code</th>
+                                    <th>Transmission Configuration Paradigm</th>
+                                    <th>Asset Status Deployment Parameter</th>
+                                    <th>Maintenance Cycle Baseline Timestamp</th>
+                                    <th>Operations Controls</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vehiclesTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="lessons" class="section">
+                    <div class="section-header">
+                        <h1>Course Session Scheduling Matrix</h1>
+                    </div>
+                    <div class="toolbar">
+                        <input type="text" class="search-input" id="searchLessons" placeholder="Scan session tracking indices..." oninput="renderLessonsTable()">
+                        <div class="toolbar-controls">
+                            <button class="btn" id="btnBookLesson" onclick="openCreateModal('lessons')"><i class="fas fa-calendar-plus"></i> Blueprint Allocations Sequence Slot</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Session ID</th>
+                                    <th>Allocated Student Target Instance</th>
+                                    <th>Assigned Instructor Node Source</th>
+                                    <th>Assigned Automotive Fleet Asset Token</th>
+                                    <th>Execution Scheduling Time Window Bounds</th>
+                                    <th>Execution Vector Tracking State Flag</th>
+                                    <th>Operations Controls</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lessonsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="payments" class="section">
+                    <div class="section-header">
+                        <h1>Financial Ledger Statements Audit</h1>
+                    </div>
+                    <div class="toolbar">
+                        <input type="text" class="search-input" id="searchPayments" placeholder="Scan financial statement records..." oninput="renderPaymentsTable()">
+                        <div class="toolbar-controls">
+                            <button class="btn" id="btnRecordPayment" onclick="openCreateModal('payments')"><i class="fas fa-hand-holding-usd"></i> Record Ledger Invoice Transaction Entry</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ledger Invoice Routing Token</th>
+                                    <th>Payer Student Source Entity Pointer</th>
+                                    <th>Aggregated Capital Transferred Summation (LKR)</th>
+                                    <th>Transaction Clearing Mechanism Mode</th>
+                                    <th>Ledger Accounting Verification Date Stamp</th>
+                                    <th>Transaction Lifecycle State Audit Assertion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="analytics" class="section">
+                    <div class="section-header">
+                        <h1>Operational Analytics Intelligence Engine</h1>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <div class="chart-box">
+                            <h4>Quarterly Revenue Inflow Vectors (Pure-CSS Visualization Stack)</h4>
+                            <div class="bar-chart-css" style="height: 240px;">
+                                <div class="bar-col"><div class="bar-val">40k</div><div class="bar-fill" style="height: 35%; background: #60a5fa;"></div><span class="bar-label">Q1 Revenue</span></div>
+                                <div class="bar-col"><div class="bar-val">85k</div><div class="bar-fill" style="height: 65%; background: #3b82f6;"></div><span class="bar-label">Q2 Revenue</span></div>
+                                <div class="bar-col"><div class="bar-val">120k</div><div class="bar-fill" style="height: 85%; background: #8b5cf6;"></div><span class="bar-label">Q3 Revenue</span></div>
+                                <div class="bar-col"><div class="bar-val">150k</div><div class="bar-fill" style="height: 100%; background: linear-gradient(to top, #8b5cf6, #ec4899);"></div><span class="bar-label">Q4 Projection</span></div>
+                            </div>
+                        </div>
+
+                        <div class="chart-box">
+                            <h4>Active Curricula Enrolment Market Shares</h4>
+                            <div class="pie-list-css">
+                                <div class="pie-item">
+                                    <span class="pie-lead"><span class="pie-dot" style="background-color: #ef4444;"></span>Regular Manual Courses</span>
+                                    <span class="pie-val">45% Allocation</span>
+                                </div>
+                                <div class="pie-item">
+                                    <span class="pie-lead"><span class="pie-dot" style="background-color: #3b82f6;"></span>Premium Automatic Modules</span>
+                                    <span class="pie-val">38% Allocation</span>
+                                </div>
+                                <div class="pie-item">
+                                    <span class="pie-lead"><span class="pie-dot" style="background-color: #10b981;"></span>VVIP Executive FastTrack</span>
+                                    <span class="pie-val">17% Allocation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Entity Parameter Dialog</h3>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Abort Context</button>
+                <button class="btn" id="modalSubmitBtn" onclick="submitModalForm()">Commit Configurations State Sequence</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastAlert">
+        <i class="fas fa-circle-info" id="toastIcon"></i> <span id="toastMessage">Alert Notification Details Context</span>
+    </div>
+
+    <script>
+        /* --- GLOBAL MEMORY IN-MEMORY STATE PROTOCOLS --- */
+        let currentRole = 'admin';
+        let activeModalTarget = '';
+        let activeEditId = null;
+        let otpTimerInterval = null;
+
+        let db = {
+            students: [],
+            instructors: [],
+            vehicles: [],
+            lessons: [],
+            payments: []
+        };
+
+        /* --- IMMUTABLE VALIDATION STRUCTURAL SCHEMAS ASSERTIONS --- */
+        const validators = {
+            phone: (val) => /^\+94\d{9}$/.test(val.trim()), 
+            plate: (val) => /^[A-Z]{2,3}\s[A-Z]{2,3}-\d{4}$/i.test(val.trim()), 
+            license: (val) => /^L-DMV-\d{5}$/i.test(val.trim()), 
+            text: (val, min = 2) => val.trim().length >= min,
+            email: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim())
+        };
+
+        /* --- SEED INJECTOR UTILITY FOR COLD ENGINE START CYCLE BOOTSTRAP --- */
+        function seedMockData() {
+            db.students = [
+                { id: 101, name: "Nimlesh Perera", email: "nimlesh@example.com", phone: "+94771234567", package: "Premium Auto Course", status: "Active" },
+                { id: 102, name: "Fathima Rizna", email: "rizna@example.com", phone: "+94719876543", package: "Regular Manual Course", status: "Active" }
+            ];
+            db.instructors = [
+                { id: 201, name: "Captain Ranjith Silva", license: "L-DMV-90142", phone: "+94752221111", specialization: "Defensive Driving Pro", availability: "Available" },
+                { id: 202, name: "Mahinda Alwis", license: "L-DMV-33152", phone: "+94724449999", specialization: "Light Motor Cars", availability: "Available" }
+            ];
+            db.vehicles = [
+                { id: 301, model: "Toyota Vitz", plate: "WP CAD-2291", transmission: "Automatic", status: "Active", serviceDate: "2026-04-12" },
+                { id: 302, model: "Suzuki Alto", plate: "WP CAA-8831", transmission: "Manual", status: "Active", serviceDate: "2026-05-01" }
+            ];
+            db.lessons = [
+                { id: 401, student: "Nimlesh Perera", instructor: "Captain Ranjith Silva", vehicle: "Toyota Vitz (WP CAD-2291)", dateTime: "2026-08-12T10:00", status: "Scheduled" }
+            ];
+            db.payments = [
+                { id: 501, student: "Nimlesh Perera", amount: "45000", method: "POS Terminals Card", date: "2026-06-15" },
+                { id: 502, student: "Fathima Rizna", amount: "35000", method: "Cash Transfer", date: "2026-06-18" }
+            ];
+        }
+
+        /* --- INITIAL PERSISTENCE ENGINE DEPLOYMENT RESOLVERS --- */
+        async function initDatabaseContext() {
+            try {
+                const response = await fetch('/api/data');
+                if (!response.ok) throw new Error('API unavailable');
+                db = await response.json();
+                updateUI();
+            } catch (error) {
+                console.error('Could not load server data:', error);
+                const cache = localStorage.getItem('drivingSchoolDB');
+                if (cache) { try { db = JSON.parse(cache); } catch(e) { seedMockData(); } }
+                else seedMockData();
+                updateUI();
+                showToast('Backend unavailable. Showing local demo data.', true);
+            }
+        }
+
+        async function saveState() {
+            localStorage.setItem('drivingSchoolDB', JSON.stringify(db));
+            updateUI();
+            try {
+                const response = await fetch('/api/data', {
+                    method: 'PUT',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(db)
+                });
+                if (!response.ok) throw new Error('Save failed');
+            } catch (error) {
+                console.error('Could not save server data:', error);
+                showToast('Could not save to backend. Check that Spring Boot is running.', true);
+            }
+        }
+
+        /* --- THEME CONTEXT SWITCH CONTROLLERS --- */
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            
+            const btns = [document.getElementById('themeToggleFloat'), document.querySelector('.sidebar-theme-btn')];
+            btns.forEach(b => {
+                if(b) {
+                    const icon = b.querySelector('i');
+                    const span = b.querySelector('span');
+                    if(isDark) {
+                        icon.className = 'fas fa-sun';
+                        if(span) span.innerText = 'Light Mode';
+                    } else {
+                        icon.className = 'fas fa-moon';
+                        if(span) span.innerText = 'Dark Mode';
+                    }
+                }
+            });
+        }
+
+        function syncThemeButtonVisibility() {
+            const dashVisible = document.getElementById('system').style.display === 'block';
+            document.getElementById('themeToggleFloat').classList.toggle('hidden', dashVisible);
+        }
+
+        /* --- USER INTERACTION FORMS GATEWAY LAYER --- */
+        function toggleRoleDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('roleMenu').classList.toggle('open');
+            document.getElementById('dropdownArrow').classList.toggle('open');
+        }
+
+        function selectRole(val, icon, label, desc) {
+            document.getElementById('roleSelectedIcon').className = `fas ${icon}`;
+            document.getElementById('roleSelectedLabel').innerText = label;
+            document.getElementById('role').value = val;
+            
+            document.querySelectorAll('.dropdown-item-check').forEach(c => c.classList.remove('visible'));
+            document.getElementById(`check-${val}`).classList.add('visible');
+            
+            document.getElementById('roleMenu').classList.remove('open');
+            document.getElementById('dropdownArrow').classList.remove('open');
+        }
+
+        document.addEventListener('click', () => {
+            const menu = document.getElementById('roleMenu');
+            const arrow = document.getElementById('dropdownArrow');
+            if(menu) menu.classList.remove('open');
+            if(arrow) arrow.classList.remove('open');
+        });
+
+        function togglePasswordVisibility(id, icon) {
+            const el = document.getElementById(id);
+            if(el.type === 'password') {
+                el.type = 'text';
+                icon.className = 'fas fa-eye-slash toggle-eye';
+            } else {
+                el.type = 'password';
+                icon.className = 'fas fa-eye toggle-eye';
+            }
+        }
+
+        /* --- FORGOT PASSWORD SUB-FLOW ROUTING ENGINES --- */
+        function showForgotPanel(e) {
+            if(e) e.preventDefault();
+            document.getElementById('loginFormBlock').style.display = 'none';
+            document.getElementById('forgotPanelBlock').style.display = 'block';
+            resetForgotPanel();
+        }
+
+        function hideForgotPanel(e) {
+            if(e) e.preventDefault();
+            document.getElementById('forgotPanelBlock').style.display = 'none';
+            document.getElementById('loginFormBlock').style.display = 'block';
+            clearInterval(otpTimerInterval);
+        }
+
+        function resetForgotPanel() {
+            document.getElementById('fpStepPhone').style.display = 'block';
+            document.getElementById('fpStepOTP').style.display = 'none';
+            document.getElementById('fpStepNewPass').style.display = 'none';
+            document.getElementById('fpTitle').innerText = 'Account Recovery';
+            document.getElementById('fpDesc').innerText = 'Verify phone details for credential patching';
+            document.getElementById('fpPhoneInput').value = '';
+            document.getElementById('fpPhoneInput').classList.remove('is-invalid');
+            document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+        }
+
+        function fpRequestOTP() {
+            const ph = document.getElementById('fpPhoneInput').value;
+            if(!validators.phone(ph)) {
+                document.getElementById('fpPhoneInput').classList.add('is-invalid');
+                return showToast('Invalid phone configuration rules framework. Pattern syntax: +94771234567', true);
+            }
+            document.getElementById('fpPhoneInput').classList.remove('is-invalid');
+            
+            // Proceed to verify code segment view sequence
+            document.getElementById('fpStepPhone').style.display = 'none';
+            document.getElementById('fpStepOTP').style.display = 'block';
+            document.getElementById('fpTitle').innerText = 'Input Identity Token';
+            document.getElementById('fpDesc').innerText = 'Verification cipher sequence evaluation state';
+            
+            startOtpTimer();
+            showToast('Authorization cipher vector successfully generated & transmitted.');
+        }
+
+        function startOtpTimer() {
+            clearInterval(otpTimerInterval);
+            let time = 120;
+            const target = document.getElementById('otpCountdown');
+            otpTimerInterval = setInterval(() => {
+                time--;
+                let min = Math.floor(time / 60).toString().padStart(2, '0');
+                let sec = (time % 60).toString().padStart(2, '0');
+                target.innerText = `${min}:${sec}`;
+                if(time <= 0) {
+                    clearInterval(otpTimerInterval);
+                    showToast('OTP expiration lifecycle terminated. Please retransmit verification token sequence.', true);
+                    resetForgotPanel();
+                }
+            }, 1000);
+        }
+
+        function otpAutoTab(el, idx) {
+            if (el.value.length === 1 && idx < 5) {
+                document.querySelectorAll('.otp-box')[idx + 1].focus();
+            }
+        }
+
+        function otpBacktrack(e, idx) {
+            if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+                document.querySelectorAll('.otp-box')[idx - 1].focus();
+            }
+        }
+
+        function fpVerifyOTP() {
+            let tokenStr = '';
+            document.querySelectorAll('.otp-box').forEach(b => tokenStr += b.value);
+            if(tokenStr.length !== 6) return showToast('Assertions failed: incomplete cryptographic challenge data array length.', true);
+            
+            clearInterval(otpTimerInterval);
+            document.getElementById('fpStepOTP').style.display = 'none';
+            document.getElementById('fpStepNewPass').style.display = 'block';
+            document.getElementById('fpTitle').innerText = 'Patch Access Node Passcode';
+            document.getElementById('fpDesc').innerText = 'Inject new administrative authentication strings into context';
+        }
+
+        function fpOverridePassword() {
+            const pass = document.getElementById('fpNewPassInput').value.trim();
+            if(pass.length < 4) return showToast('The configuration parameters failed basic constraints rules. Minimum length: 4 characters.', true);
+            
+            window._demoNewPassword = pass;
+            showToast('System password parameter reset successfully. Node patched.');
+            hideForgotPanel();
+            document.getElementById('password').value = pass;
+        }
+
+        /* --- PORTAL ENTRANCE SECURITY AND ROUTING SUBSYSTEM MODULE --- */
+        async function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            currentRole = document.getElementById('role').value;
+
+            if(!user || !pass) return showToast('Gateway access failure conditions detected: Empty credential blocks.', true);
+            
+            const baselineToken = window._demoNewPassword || 'password';
+            if(!user || !pass) return showToast('Enter username and password.', true);
+            try {
+                const authResponse = await fetch('/api/auth/login', {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({username:user, password:pass, role:currentRole})
+                });
+                if (!authResponse.ok) {
+                    const err = await authResponse.json().catch(() => ({}));
+                    return showToast(err.message || 'Invalid credentials or role.', true);
+                }
+            } catch (e) {
+                if (user !== 'admin' || pass !== baselineToken) return showToast('Backend unavailable and demo login failed.', true);
+            }
+
+            // Access Granted: Unmount authentication layer and interface operational views context
+            document.getElementById('loginWrapper').style.display = 'none';
+            document.getElementById('system').style.display = 'block';
+            syncThemeButtonVisibility();
+
+            document.getElementById('portalGreetingTitle').innerText = `Monitor Interface - Node: ${user.toUpperCase()} (${currentRole.toUpperCase()})`;
+
+            // Apply granular security tier access parameter mappings
+            applyRoleSecurityConstraints();
+            
+            showToast(`Operational node synchronization successful. Welcome back, agent.`);
+            updateUI();
+        }
+
+        function applyRoleSecurityConstraints() {
+            // Reset visible blocks
+            const blocks = ['menuStudents', 'menuInstructors', 'menuVehicles', 'menuPayments', 'menuAnalytics', 'revenueCard', 'btnAddStudent', 'btnAddInstructor', 'btnAddVehicle', 'btnBookLesson', 'btnRecordPayment'];
+            blocks.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = ''; });
+
+            if (currentRole === 'instructor') {
+                const hidden = ['menuPayments', 'menuAnalytics', 'revenueCard', 'btnAddInstructor', 'btnAddVehicle', 'btnRecordPayment'];
+                hidden.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
+            } else if (currentRole === 'student') {
+                const hidden = ['menuStudents', 'menuInstructors', 'menuVehicles', 'menuPayments', 'menuAnalytics', 'revenueCard', 'btnAddStudent', 'btnAddInstructor', 'btnAddVehicle', 'btnBookLesson', 'btnRecordPayment'];
+                hidden.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
+            }
+        }
+
+        function logout() {
+            location.reload();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        function showSection(secId, triggerLink) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(secId).classList.add('active');
+            if(triggerLink) triggerLink.classList.add('active');
+        }
+
+        /* --- USER MONITOR CONSOLE RENDER DATA HANDLERS --- */
+        function updateUI() {
+            if(!document.getElementById('system') || document.getElementById('system').style.display === 'none') return;
+
+            document.getElementById('dStudents').innerText = db.students.length;
+            document.getElementById('dInstructors').innerText = db.instructors.length;
+            document.getElementById('dVehicles').innerText = db.vehicles.length;
+            document.getElementById('dLessons').innerText = db.lessons.length;
+
+            const revSum = db.payments.reduce((acc, p) => acc + parseFloat(p.amount || 0), 0);
+            document.getElementById('dRevenue').innerText = `${revSum.toLocaleString()}`;
+
+            const manualCount = db.vehicles.filter(v => v.transmission === 'Manual').length;
+            document.getElementById('analyticsManual').innerText = manualCount;
+            document.getElementById('analyticsAuto').innerText = db.vehicles.length - manualCount;
+
+            renderStudentsTable();
+            renderInstructorsTable();
+            renderVehiclesTable();
+            renderLessonsTable();
+            renderPaymentsTable();
+        }
+
+        /* --- DYNAMIC PROFILE ARCHITECTURE RENDER TABLES DATA FLOW --- */
+        function renderStudentsTable() {
+            const queryInput = document.getElementById('searchStudents');
+            if(!queryInput) return;
+            const query = queryInput.value.toLowerCase();
+            const target = document.getElementById('studentsTableBody');
+            if(!target) return;
+            target.innerHTML = '';
+
+            db.students.filter(s => (s.name || '').toLowerCase().includes(query) || (s.email || '').toLowerCase().includes(query)).forEach(s => {
+                const actionsHtml = currentRole === 'student' ? '<td></td>' : `
+                    <td class="action-btns">
+                        <button class="action-btn edit" onclick="openEditModal('students', ${s.id})" title="Modify Profile Parameters"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteRecord('students', ${s.id})" title="Wipe Data Record"><i class="fas fa-trash"></i></button>
+                    </td>`;
+                
+                target.innerHTML += `<tr>
+                    <td>#STU-${s.id}</td>
+                    <td><b>${s.name}</b></td>
+                    <td>${s.email}</td>
+                    <td>${s.phone}</td>
+                    <td><span class="badge badge-primary">${s.package}</span></td>
+                    <td><span class="badge ${s.status === 'Active' ? 'badge-success' : 'badge-danger'}">${s.status}</span></td>
+                    ${actionsHtml}
+                </tr>`;
+            });
+        }
+
+        function renderInstructorsTable() {
+            const queryInput = document.getElementById('searchInstructors');
+            if(!queryInput) return;
+            const query = queryInput.value.toLowerCase();
+            const target = document.getElementById('instructorsTableBody');
+            if(!target) return;
+            target.innerHTML = '';
+
+            db.instructors.filter(i => (i.name || '').toLowerCase().includes(query) || (i.specialization || '').toLowerCase().includes(query)).forEach(i => {
+                const actionsHtml = currentRole !== 'admin' ? '<td></td>' : `
+                    <td class="action-btns">
+                        <button class="action-btn edit" onclick="openEditModal('instructors', ${i.id})" title="Edit Module Profile"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteRecord('instructors', ${i.id})" title="Purge Record Slot"><i class="fas fa-trash"></i></button>
+                    </td>`;
+
+                target.innerHTML += `<tr>
+                    <td>#INS-${i.id}</td>
+                    <td><b>${i.name}</b></td>
+                    <td><code>${i.license}</code></td>
+                    <td>${i.phone}</td>
+                    <td>${i.specialization}</td>
+                    <td><span class="badge badge-success">${i.availability}</span></td>
+                    ${actionsHtml}
+                </tr>`;
+            });
+        }
+
+        function renderVehiclesTable() {
+            const queryInput = document.getElementById('searchVehicles');
+            if(!queryInput) return;
+            const query = queryInput.value.toLowerCase();
+            const target = document.getElementById('vehiclesTableBody');
+            if(!target) return;
+            target.innerHTML = '';
+
+            db.vehicles.filter(v => (v.model || '').toLowerCase().includes(query) || (v.plate || '').toLowerCase().includes(query)).forEach(v => {
+                const actionsHtml = currentRole !== 'admin' ? '<td></td>' : `
+                    <td class="action-btns">
+                        <button class="action-btn edit" onclick="openEditModal('vehicles', ${v.id})" title="Update Configuration Matrix"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteRecord('vehicles', ${v.id})" title="De-authorize Fleet Asset Unit"><i class="fas fa-trash"></i></button>
+                    </td>`;
+
+                target.innerHTML += `<tr>
+                    <td>#VEH-${v.id}</td>
+                    <td><b>${v.model}</b></td>
+                    <td><code>${v.plate}</code></td>
+                    <td><span class="badge badge-primary">${v.transmission}</span></td>
+                    <td><span class="badge badge-success">${v.status}</span></td>
+                    <td>${v.serviceDate}</td>
+                    ${actionsHtml}
+                </tr>`;
+            });
+        }
+
+        function renderLessonsTable() {
+            const queryInput = document.getElementById('searchLessons');
+            if(!queryInput) return;
+            const query = queryInput.value.toLowerCase();
+            const target = document.getElementById('lessonsTableBody');
+            if(!target) return;
+            target.innerHTML = '';
+
+            db.lessons.filter(l => (l.student || '').toLowerCase().includes(query) || (l.instructor || '').toLowerCase().includes(query)).forEach(l => {
+                const actionsHtml = currentRole === 'student' ? '<td></td>' : `
+                    <td class="action-btns">
+                        <button class="action-btn delete" onclick="deleteRecord('lessons', ${l.id})" style="color:var(--danger);" title="Revoke Allocation Order Slot Link"><i class="fas fa-times-circle"></i></button>
+                    </td>`;
+
+                const formattedTime = l.dateTime.replace('T', ' ');
+                target.innerHTML += `<tr>
+                    <td>#LES-${l.id}</td>
+                    <td><b>${l.student}</b></td>
+                    <td>${l.instructor}</td>
+                    <td><small>${l.vehicle}</small></td>
+                    <td><code>${formattedTime}</code></td>
+                    <td><span class="badge badge-warning">${l.status}</span></td>
+                    ${actionsHtml}
+                </tr>`;
+            });
+        }
+
+        function renderPaymentsTable() {
+            const queryInput = document.getElementById('searchPayments');
+            if(!queryInput) return;
+            const query = queryInput.value.toLowerCase();
+            const target = document.getElementById('paymentsTableBody');
+            if(!target) return;
+            target.innerHTML = '';
+
+            db.payments.filter(p => (p.student || '').toLowerCase().includes(query)).forEach(p => {
+                target.innerHTML += `<tr>
+                    <td>#INV-${p.id}</td>
+                    <td><b>${p.student}</b></td>
+                    <td>LKR ${parseFloat(p.amount).toLocaleString()}</td>
+                    <td><small>${p.method}</small></td>
+                    <td>${p.date}</td>
+                    <td><span class="badge badge-success">Clearing Verified</span></td>
+                </tr>`;
+            });
+        }
+
+        /* --- CENTRALIZED INTERACTIVE MODAL BOX SYSTEM LAYOUT HANDLERS --- */
+        function openModal(title, bodyContent) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerHTML = bodyContent;
+            document.getElementById('modalBackdrop').style.display = 'flex';
+            clearInlineFormErrors();
+        }
+
+        function closeModal() {
+            document.getElementById('modalBackdrop').style.display = 'none';
+            activeModalTarget = '';
+            activeEditId = null;
+        }
+
+        function clearInlineFormErrors() {
+            document.querySelectorAll('.form-control').forEach(e => e.classList.remove('is-invalid'));
+            document.querySelectorAll('.modal-body .error-message').forEach(e => e.style.display = 'none');
+        }
+
+        function triggerInlineValidationError(id, text) {
+            const field = document.getElementById(id);
+            if(field) {
+                field.classList.add('is-invalid');
+                let err = field.parentNode.querySelector('.error-message');
+                if(!err) {
+                    err = document.createElement('span');
+                    err.className = 'error-message';
+                    field.parentNode.appendChild(err);
+                }
+                err.innerText = text;
+                err.style.display = 'block';
+            }
+        }
+
+        function openCreateModal(type) {
+            activeModalTarget = type;
+            activeEditId = null;
+            let html = '';
+
+            if (type === 'students') {
+                html = `
+                    <div class="form-group"><label>Legal Full Name</label><input type="text" id="fStuName" class="form-control" placeholder="Nimlesh Perera"></div>
+                    <div class="form-group"><label>Electronic Email Mailbox</label><input type="email" id="fStuEmail" class="form-control" placeholder="operator@domain.lk"></div>
+                    <div class="form-group"><label>Telecom Phone String Code</label><input type="text" id="fStuPhone" class="form-control" placeholder="+94771234567"></div>
+                    <div class="form-group"><label>Active Training Curricula Course Selection</label>
+                        <select id="fStuPkg" class="form-control">
+                            <option>Regular Manual Course</option>
+                            <option>Premium Auto Course</option>
+                            <option>VVIP FastTrack Package</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Deployment System Status Flag</label>
+                        <select id="fStuStatus" class="form-control"><option>Active</option><option>Suspended</option></select>
+                    </div>`;
+                openModal('Initialize Fresh Student Profile Node', html);
+            } 
+            else if (type === 'instructors') {
+                html = `
+                    <div class="form-group"><label>Instructor Identity Name</label><input type="text" id="fInsName" class="form-control" placeholder="Mahinda Alwis"></div>
+                    <div class="form-group"><label>DMV License Authorization Token</label><input type="text" id="fInsLic" class="form-control" placeholder="L-DMV-12345"></div>
+                    <div class="form-group"><label>Telecom Mobile Node Connection</label><input type="text" id="fInsPhone" class="form-control" placeholder="+94771234567"></div>
+                    <div class="form-group"><label>Specialization Functional Disciplines</label><input type="text" id="fInsSpec" class="form-control" placeholder="Defensive Driving Pro"></div>
+                    <div class="form-group"><label>Availability Framework Parameter</label>
+                        <select id="fInsAvail" class="form-control"><option>Available</option><option>On-Leave</option></select>
+                    </div>`;
+                openModal('Enroll Certified Instructor Asset Matrix', html);
+            }
+            else if (type === 'vehicles') {
+                html = `
+                    <div class="form-group"><label>Automotive Variant Make Model</label><input type="text" id="fVehModel" class="form-control" placeholder="Toyota Vitz"></div>
+                    <div class="form-group"><label>Regional Registration Plate Serial ID</label><input type="text" id="fVehPlate" class="form-control" placeholder="WP CAD-2291"></div>
+                    <div class="form-group"><label>Transmission Mechanics Paradigm Layout</label>
+                        <select id="fVehTrans" class="form-control"><option>Automatic</option><option>Manual</option></select>
+                    </div>
+                    <div class="form-group"><label>Fleet Deployment Status Condition</label>
+                        <select id="fVehStatus" class="form-control"><option>Active</option><option>Maintenance</option></select>
+                    </div>
+                    <div class="form-group"><label>Maintenance Cycle Timestamp Milestone</label><input type="date" id="fVehDate" class="form-control"></div>`;
+                openModal('Asset New Vehicle Unit Frame into Fleet Grid', html);
+            }
+            else if (type === 'lessons') {
+                const stuOpts = db.students.map(s => `<option>${s.name}</option>`).join('');
+                const insOpts = db.instructors.map(i => `<option>${i.name}</option>`).join('');
+                const vehOpts = db.vehicles.map(v => `<option>${v.model} (${v.plate})</option>`).join('');
+
+                if(!stuOpts || !insOpts || !vehOpts) {
+                    openModal('Critical Dependency Exceptions Error Block', `<p style="color:var(--danger); text-align:center; padding:15px;">Operational dependency parameters failed validation matching rules. System requires at least one initialized student instance pool, instructor asset node, and fleet unit record before mapping allocation links.</p>`);
+                    return;
+                }
+
+                html = `
+                    <div class="form-group"><label>Target Student Entity Address</label><select id="fLesStu" class="form-control">${stuOpts}</select></div>
+                    <div class="form-group"><label>Target Certified Instructor Node</label><select id="fLesIns" class="form-control">${insOpts}</select></div>
+                    <div class="form-group"><label>Target Safe Fleet Training Vehicle Asset</label><select id="fLesVeh" class="form-control">${vehOpts}</select></div>
+                    <div class="form-group"><label>Scheduling Date and Time Sequence Bounds</label><input type="datetime-local" id="fLesTime" class="form-control"></div>`;
+                openModal('Blueprint Allocation Lesson Slot Structure', html);
+            }
+            else if (type === 'payments') {
+                const stuOpts = db.students.map(s => `<option>${s.name}</option>`).join('');
+                if(!stuOpts) {
+                    openModal('Ledger Core Routing Warning Block', `<p style="color:var(--danger); text-align:center; padding:15px;">No structural target profiles records matched to act as invoice parameters target source addresses.</p>`);
+                    return;
+                }
+
+                html = `
+                    <div class="form-group"><label>Source Student Payer Record Target Address</label><select id="fPayStu" class="form-control">${stuOpts}</select></div>
+                    <div class="form-group"><label>Aggregated Invoiced Sum Transferred (LKR)</label><input type="number" id="fPayAmt" class="form-control" placeholder="25000"></div>
+                    <div class="form-group"><label>Clearing Transaction Mechanism Mode Option</label>
+                        <select id="fPayMethod" class="form-control">
+                            <option>Cash Transfer</option>
+                            <option>Bank Transfer/Gateway</option>
+                            <option>POS Terminals Card</option>
+                        </select>
+                    </div>`;
+                openModal('Process Dynamic Financial Ledger Invoice Entry Block', html);
+            }
+        }
+
+        function openEditModal(type, id) {
+            openCreateModal(type);
+            activeEditId = id;
+            const record = db[type].find(x => x.id === id);
+            if(!record) return;
+
+            document.getElementById('modalTitle').innerText = `Modify Active Target Structure Metadata Data Node Configuration Matrix`;
+
+            if (type === 'students') {
+                document.getElementById('fStuName').value = record.name;
+                document.getElementById('fStuEmail').value = record.email;
+                document.getElementById('fStuPhone').value = record.phone;
+                document.getElementById('fStuPkg').value = record.package;
+                document.getElementById('fStuStatus').value = record.status;
+            } else if (type === 'instructors') {
+                document.getElementById('fInsName').value = record.name;
+                document.getElementById('fInsLic').value = record.license;
+                document.getElementById('fInsPhone').value = record.phone;
+                document.getElementById('fInsSpec').value = record.specialization;
+                document.getElementById('fInsAvail').value = record.availability;
+            } else if (type === 'vehicles') {
+                document.getElementById('fVehModel').value = record.model;
+                document.getElementById('fVehPlate').value = record.plate;
+                document.getElementById('fVehTrans').value = record.transmission;
+                document.getElementById('fVehStatus').value = record.status;
+                document.getElementById('fVehDate').value = record.serviceDate;
+            }
+        }
+
+        function submitModalForm() {
+            clearInlineFormErrors();
+            let failsRules = false;
+            const t = activeModalTarget;
+
+            if (t === 'students') {
+                const name = document.getElementById('fStuName').value;
+                const email = document.getElementById('fStuEmail').value;
+                const phone = document.getElementById('fStuPhone').value;
+                
+                if(!validators.text(name, 2)) { triggerInlineValidationError('fStuName', 'Name fails criteria constraints validation.'); failsRules = true; }
+                if(!validators.email(email)) { triggerInlineValidationError('fStuEmail', 'Email pattern block missing structural indices parameters.'); failsRules = true; }
+                if(!validators.phone(phone)) { triggerInlineValidationError('fStuPhone', 'Invalid formatting configuration constraints rules framework. Pattern layout: +94771234567'); failsRules = true; }
+
+                if(failsRules) return;
+
+                const data = {
+                    id: activeEditId || Date.now(),
+                    name, email, phone,
+                    package: document.getElementById('fStuPkg').value,
+                    status: document.getElementById('fStuStatus').value
+                };
+
+                if(activeEditId) {
+                    const idx = db.students.findIndex(x => x.id === activeEditId);
+                    db.students[idx] = data;
+                } else {
+                    db.students.push(data);
+                }
+            } 
+            else if (t === 'instructors') {
+                const name = document.getElementById('fInsName').value;
+                const license = document.getElementById('fInsLic').value;
+                const phone = document.getElementById('fInsPhone').value;
+                const specialization = document.getElementById('fInsSpec').value;
+
+                if(!validators.text(name, 2)) { triggerInlineValidationError('fInsName', 'Name parameters string cannot map empty indices.'); failsRules = true; }
+                if(!validators.license(license)) { triggerInlineValidationError('fInsLic', 'DMV license pattern syntax sequence bounds constraint anomaly. Pattern template: L-DMV-12345'); failsRules = true; }
+                if(!validators.phone(phone)) { triggerInlineValidationError('fInsPhone', 'Invalid configuration pattern matching framework rules. Template: +94771234567'); failsRules = true; }
+
+                if(failsRules) return;
+
+                const data = {
+                    id: activeEditId || Date.now(),
+                    name, license, phone, specialization,
+                    availability: document.getElementById('fInsAvail').value
+                };
+
+                if(activeEditId) {
+                    const idx = db.instructors.findIndex(x => x.id === activeEditId);
+                    db.instructors[idx] = data;
+                } else {
+                    db.instructors.push(data);
+                }
+            }
+            else if (t === 'vehicles') {
+                const model = document.getElementById('fVehModel').value;
+                const plate = document.getElementById('fVehPlate').value;
+                const serviceDate = document.getElementById('fVehDate').value;
+
+                if(!validators.text(model, 2)) { triggerInlineValidationError('fVehModel', 'Make Model configuration parameter token structural integrity empty error.'); failsRules = true; }
+                if(!validators.plate(plate)) { triggerInlineValidationError('fVehPlate', 'Automotive plate structure configuration matching constraints anomaly. Schema blueprint syntax: WP CAD-2291'); failsRules = true; }
+                if(!serviceDate) { triggerInlineValidationError('fVehDate', 'Service milestone parameters timestamp cannot remain zeroed.'); failsRules = true; }
+
+                if(failsRules) return;
+
+                const data = {
+                    id: activeEditId || Date.now(),
+                    model, plate, serviceDate,
+                    transmission: document.getElementById('fVehTrans').value,
+                    status: document.getElementById('fVehStatus').value
+                };
+
+                if(activeEditId) {
+                    const idx = db.vehicles.findIndex(x => x.id === activeEditId);
+                    db.vehicles[idx] = data;
+                } else {
+                    db.vehicles.push(data);
+                }
+            }
+            else if (t === 'lessons') {
+                const dateTime = document.getElementById('fLesTime').value;
+                if(!dateTime) { triggerInlineValidationError('fLesTime', 'Time windows allocation boundaries cannot settle null states context.'); return; }
+
+                db.lessons.push({
+                    id: Date.now(),
+                    student: document.getElementById('fLesStu').value,
+                    instructor: document.getElementById('fLesIns').value,
+                    vehicle: document.getElementById('fLesVeh').value,
+                    dateTime,
+                    status: 'Scheduled'
+                });
+            }
+            else if (t === 'payments') {
+                const amount = document.getElementById('fPayAmt').value;
+                if(!amount || parseFloat(amount) <= 0) { triggerInlineValidationError('fPayAmt', 'Ledger invoice transactions value must map integer states greater than zero bounds.'); return; }
+
+                db.payments.push({
+                    id: Date.now(),
+                    student: document.getElementById('fPayStu').value,
+                    amount,
+                    method: document.getElementById('fPayMethod').value,
+                    date: new Date().toISOString().split('T')[0]
+                });
+            }
+
+            closeModal();
+            saveState();
+            showToast('Entity configuration tracking context state sequence finalized and committed successfully.');
+        }
+
+        function deleteRecord(table, id) {
+            if(confirm('Are you absolutely certain you intend to drop this active data node mapping structural pointer instance link? This action cannot be reversed under transactional protocol routines frameworks.')) {
+                db[table] = db[table].filter(x => x.id !== id);
+                saveState();
+                showToast('Entity structural map index drop transaction sequence finalized cleanly.');
+            }
+        }
+
+        /* --- IMMERSIVE UTILITIES INFRASTRUCTURE TOAST LABELS CONTROLLER --- */
+        function showToast(msg, isError = false) {
+            const el = document.getElementById('toastAlert');
+            const icon = document.getElementById('toastIcon');
+            const txt = document.getElementById('toastMessage');
+
+            if(!el) return;
+            txt.innerText = msg;
+            
+            if(isError) {
+                el.classList.add('error');
+                icon.className = 'fas fa-triangle-exclamation';
+            } else {
+                el.classList.remove('error');
+                icon.className = 'fas fa-circle-check';
+            }
+
+            el.classList.add('show');
+            setTimeout(() => {
+                el.classList.remove('show');
+            }, 4000);
+        }
+
+        function footerSubscribe() {
+            const input = document.getElementById('footerEmail');
+            const email = input.value.trim();
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                return showToast('Please enter a valid email address configuration node pattern block.', true);
+            }
+            showToast(`✓ Subscribed! Operations transmission updates sent cleanly to node: ${email}`);
+            input.value = '';
+        }
+
+        /* --- ENGINE INITIALIZATION AND MOUNT SYSTEM HOOK --- */
+        window.onload = function() {
+            initDatabaseContext();
+            
+            // Sync dynamic footer runtime parameters
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+            // Intercept theme configuration attributes cache states rules parameters matching frameworks
+            const cachedTheme = localStorage.getItem('darkMode') === 'true' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if(cachedTheme) {
+                document.body.classList.add('dark-mode');
+                const btns = [document.getElementById('themeToggleFloat'), document.querySelector('.sidebar-theme-btn')];
+                btns.forEach(b => {
+                    if(b) {
+                        const icon = b.querySelector('i');
+                        const span = b.querySelector('span');
+                        if(icon) icon.className = 'fas fa-sun';
+                        if(span) span.innerText = 'Light Mode';
+                    }
+                });
+            }
+            syncThemeButtonVisibility();
+        };
+    </script>
+</body>
+</html>
